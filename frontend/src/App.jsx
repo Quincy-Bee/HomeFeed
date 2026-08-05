@@ -2,21 +2,34 @@ import { useState, useEffect } from "react";
 
 function App() {
 
-    // State for storing backend message
-    const [message, setMessage] = useState("");
+    const [listings, setListings] = useState([]);
 
-    // Fetch data from backend when component loads
     useEffect(() => {
-        fetch("http://localhost:3000/")
+        fetch("http://localhost:3000/api/listings")
             .then((response) => response.json())
             .then((data) => {
-                setMessage(data.message);
+                setListings(data);
+            })
+            .catch((error) => {
+                console.log("Error fetching listings:", error);
             });
     }, []);
 
-  return (
-    <h1>{message}</h1>
-  );
-};
+    return (
+        <div>
+            <h1>HomeFeed Listings</h1>
+
+            {listings.map((listing) => (
+                <div key={listing._id}>
+                    <h2>{listing.title}</h2>
+                    <p>${listing.price}</p>
+                    <p>{listing.address}</p>
+                    <p>{listing.description}</p>
+                </div>
+            ))}
+
+        </div>
+    );
+}
 
 export default App;
