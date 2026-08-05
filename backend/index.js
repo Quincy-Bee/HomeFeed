@@ -2,6 +2,7 @@ import express from "express";
 
 const app = express();
 
+// route created for home
 app.get("/", (req, res) => {
     res.send("Home Feed API Running");
 });
