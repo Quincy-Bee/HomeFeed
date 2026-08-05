@@ -12,7 +12,24 @@ router.get("/", async (req, res) => {
         res.json(listings);
 
     } catch (error) {
-        res.status(500).json({
+        res.json({
+            message: error.message
+        });
+    }
+});
+
+
+// Create a new listing
+router.post("/", async (req, res) => {
+    try {
+        const newListing = new Listing(req.body);
+
+        const savedListing = await newListing.save();
+
+        res.json(savedListing);
+
+    } catch (error) {
+        res.json({
             message: error.message
         });
     }
