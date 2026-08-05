@@ -30,6 +30,9 @@ app.get("/", (req, res) => {
     });
 });
 
+// Listing routes
+app.use("/api/listings", listingRoutes);
+
 
 // Start server
 app.listen(3000, () => {
