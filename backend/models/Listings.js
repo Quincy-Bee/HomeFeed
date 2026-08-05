@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+
 // Schema for every listing
 const listingSchema = new mongoose.Schema({
   title: {
@@ -36,3 +37,5 @@ const listingSchema = new mongoose.Schema({
 const Listing = mongoose.model("Listing", listingSchema);
 
 export default Listing;
+
+
