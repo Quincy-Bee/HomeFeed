@@ -35,5 +35,23 @@ router.post("/", async (req, res) => {
     }
 });
 
+// route to edit a listing
+router.put("/", async (req, res) => {
+    try {
+        const updatedListing = await Listing.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true }
+        );
+
+        res.json(updatedListing);
+
+    }   catch(error) {
+        res.status(500).json({
+            message: error.message
+        });
+    }
+});
+
 
 export default router;
