@@ -1,0 +1,16 @@
+
+.listing-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.card {
+    cursor: pointer;
+}
+
+.card img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 10px;
+}
