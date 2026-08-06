@@ -3,36 +3,42 @@ import Home from "./pages/Home";
 import ListingDetails from "./pages/ListingDetails";
 import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
+import EditListing from "./pages/EditListing";
 import "./App.css";
 
 function App() {
-    return (
+  return (
 
-        <>
-            <Navbar />
+    <>
+      <Navbar />
 
-            <Routes>
+      <Routes>
 
-                <Route
-                    path="/"
-                    element={<Home />}
-                />
+        <Route
+          path="/"
+          element={<Home />}
+        />
 
-                <Route
-                    path="/listings/:id"
-                    element={<ListingDetails />}
-                />
+        <Route
+          path="/listings/:id"
+          element={<ListingDetails />}
+        />
 
-                <Route
-                    path="/dashboard"
-                    element={<Dashboard />}
-                />
+        <Route
+          path="/dashboard"
+          element={<Dashboard />}
+        />
 
-            </Routes>
+        <Route
+          path="/dashboard/edit/:id"
+          element={<EditListing />}
+        />
 
-        </>
+      </Routes>
 
-    );
+    </>
+
+  );
 }
 
 export default App;

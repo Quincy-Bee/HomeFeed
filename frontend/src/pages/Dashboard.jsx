@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import "./Dashboard.css";
 
 // DASHBOARD
 
@@ -75,9 +77,12 @@ function Dashboard() {
                         </p>
 
 
-                        <button>
+                        <Link
+                            className="edit-button"
+                            to={`/dashboard/edit/${listing._id}`}
+                        >
                             Edit
-                        </button>
+                        </Link>
 
 
                         <button
