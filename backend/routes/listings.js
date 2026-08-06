@@ -36,7 +36,7 @@ router.post("/", async (req, res) => {
 });
 
 // route to edit a listing
-router.put("/", async (req, res) => {
+router.put("/:id", async (req, res) => {
     try {
         const updatedListing = await Listing.findByIdAndUpdate(
             req.params.id,
