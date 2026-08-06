@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import "./Navbar.css";
 
 function Navbar() {
+
   return (
     <nav className="navbar">
 
@@ -12,11 +13,11 @@ function Navbar() {
       <div className="nav-links">
 
         <Link to="/">
-          Browse
+          Listings
         </Link>
 
-        <Link to="/agents">
-          Agents
+        <Link to="/create">
+          Create Listing
         </Link>
 
         <Link to="/dashboard">
