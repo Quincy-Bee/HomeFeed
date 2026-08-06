@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Dashboard.css";
 
-// DASHBOARD
-
 function Dashboard() {
 
     const [listings, setListings] = useState([]);
@@ -12,89 +10,150 @@ function Dashboard() {
     useEffect(() => {
 
         fetch("http://localhost:3000/api/listings")
+
             .then((response) => response.json())
+
             .then((data) => {
                 setListings(data);
             })
+
             .catch((error) => {
                 console.log("Error fetching listings:", error);
             });
 
     }, []);
 
+
+
     const deleteListing = (id) => {
 
         fetch(`http://localhost:3000/api/listings/${id}`, {
+
             method: "DELETE",
+
         })
+
             .then((response) => response.json())
+
             .then(() => {
 
-                // remove deleted listing from the screen
-                setListings(
-                    listings.filter((listing) => listing._id !== id)
+                setListings((currentListings) =>
+                    currentListings.filter(
+                        (listing) => listing._id !== id
+                    )
                 );
 
             })
+
             .catch((error) => {
+
                 console.log("Delete error:", error);
+
             });
 
     };
 
-    // buttons and listing info
+
 
     return (
 
         <div className="dashboard">
 
-            <h1>Agent Dashboard</h1>
 
-            <Link to="/dashboard/create">
-                Create New
-            </Link>
+            <div className="dashboard-header">
 
-
-            <h2>My Listings</h2>
+                <h1>Agent Dashboard</h1>
 
 
-            <div>
+                <Link
+                    className="create-button"
+                    to="/dashboard/create"
+                >
+                    Create Listing
+                </Link>
+
+
+            </div>
+
+
+
+            <div className="dashboard-listings">
+
 
                 {listings.map((listing) => (
 
-                    <div key={listing._id}>
 
-                        <h3>
-                            {listing.title}
-                        </h3>
-
-                        <p>
-                            ${listing.price.toLocaleString()}
-                        </p>
-
-                        <p>
-                            {listing.address}
-                        </p>
+                    <div
+                        className="dashboard-card"
+                        key={listing._id}
+                    >
 
 
-                        <Link
-                            className="edit-button"
-                            to={`/dashboard/edit/${listing._id}`}
-                        >
-                            Edit
-                        </Link>
+                        <img
+                            src={listing.image}
+                            alt={listing.title}
+                        />
 
 
-                        <button
-                            onClick={() => deleteListing(listing._id)}
-                        >
-                            Delete
-                        </button>
+
+                        <div className="dashboard-card-content">
+
+
+                            <h3>
+                                {listing.title}
+                            </h3>
+
+
+
+                            <p className="dashboard-price">
+                                ${listing.price}
+                            </p>
+
+
+
+                            <p>
+                                {listing.address}
+                            </p>
+
+
+
+                            <p>
+                                {listing.bedrooms} Beds | {listing.bathrooms} Baths
+                            </p>
+
+
+
+                            <div className="dashboard-actions">
+
+
+                                <Link
+                                    className="edit-button"
+                                    to={`/dashboard/edit/${listing._id}`}
+                                >
+                                    Edit
+                                </Link>
+
+
+
+                                <button
+                                    className="delete-button"
+                                    onClick={() => deleteListing(listing._id)}
+                                >
+                                    Delete
+                                </button>
+
+
+                            </div>
+
+
+                        </div>
 
 
                     </div>
 
+
                 ))}
+
 
             </div>
 
