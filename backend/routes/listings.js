@@ -68,5 +68,19 @@ router.delete("/:id", async (req, res) => {
     }
 });
 
+// view individual listing
+
+router.get("/:id", async (req, res) => {
+  try {
+    const listing = await Listing.findById(req.params.id);
+
+    res.json(listing);
+
+  } catch (error) {
+    res.status(500).json({
+      message: error.message
+    });
+  }
+});
 
 export default router;
