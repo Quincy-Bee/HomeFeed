@@ -18,6 +18,23 @@ router.get("/", async (req, res) => {
     }
 });
 
+// Get one listing by ID
+router.get("/:id", async (req, res) => {
+  try {
+
+    const listing = await Listing.findById(req.params.id);
+
+    res.json(listing);
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message
+    });
+
+  }
+});
+
 
 // Create a new listing
 router.post("/", async (req, res) => {
