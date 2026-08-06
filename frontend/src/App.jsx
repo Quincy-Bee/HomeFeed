@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import ListingDetails from "./pages/ListingDetails";
 import Navbar from "./components/Navbar";
+import Dashboard from "./pages/Dashboard";
 import "./App.css";
 
 function App() {
@@ -20,6 +21,11 @@ function App() {
                 <Route
                     path="/listings/:id"
                     element={<ListingDetails />}
+                />
+
+                <Route
+                    path="/dashboard"
+                    element={<Dashboard />}
                 />
 
             </Routes>

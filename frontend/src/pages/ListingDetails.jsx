@@ -22,26 +22,48 @@ function ListingDetails() {
 
 
   return (
-    <div className="listing-details">
+  <div className="listing-details">
 
-      <img 
-        src={listing.image} 
-        alt={listing.title}
-      />
+    <img
+      src={listing.image}
+      alt={listing.title}
+      className="listing-image"
+    />
+
+    <div className="listing-info">
 
       <h1>{listing.title}</h1>
 
-      <h2>${listing.price.toLocaleString()}</h2>
+      <h2>
+        ${listing.price.toLocaleString()}
+      </h2>
 
       <p>{listing.address}</p>
 
       <p>
-        {listing.bedrooms} Bed • {listing.bathrooms} Bath
+        {listing.bedrooms} Bedrooms • {listing.bathrooms} Bathrooms
       </p>
 
-      <p>{listing.description}</p>
+      <p>
+        {listing.description}
+      </p>
+
+<div className="contact-box">
+
+  <h3>Interested in this property?</h3>
+
+  <p>Contact QB Realty Group for more information.</p>
+
+  <button>
+    Schedule a Showing
+  </button>
+
+</div>
 
     </div>
+
+  </div>
+
   );
 }
 
