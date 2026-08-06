@@ -50,9 +50,11 @@ function Dashboard() {
 
             <h1>Agent Dashboard</h1>
 
-            <button>
-                Create New Listing
-            </button>
+            <Link to="/dashboard/create">
+                <button className="create-button">
+                    Create Listing
+                </button>
+            </Link>
 
 
             <h2>My Listings</h2>
