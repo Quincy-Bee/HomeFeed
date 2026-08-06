@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import ListingCard from "./components/ListingCard";
 import "./App.css";
 
 function App() {
@@ -23,21 +24,12 @@ function App() {
 
       <div className="listings">
 
-        {listings.map((listing) => (
-
-          <div className="card" key={listing._id}>
-
-            <h2>{listing.title}</h2>
-
-            <p className="price">
-              ${listing.price.toLocaleString()}
-            </p>
-            <p>{listing.address}</p>
-            <p>{listing.bedrooms} Bed • {listing.bathrooms} Bath</p>
-            <p>{listing.description}</p>
-          </div>
-
-        ))}
+       {listings.map((listing) => (
+  <ListingCard 
+    key={listing._id}
+    listing={listing}
+  />
+))}
 
       </div>
 
