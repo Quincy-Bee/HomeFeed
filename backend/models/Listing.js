@@ -31,6 +31,9 @@ const listingSchema = new mongoose.Schema({
   description: {
     type: String,
   },
+  image: {
+    type: String,
+  },
 });
 
 // Create the Listing model
