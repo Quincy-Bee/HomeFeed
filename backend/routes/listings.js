@@ -53,5 +53,20 @@ router.put("/:id", async (req, res) => {
     }
 });
 
+// Delete Listing
+
+router.delete("/:id", async (req, res) => {
+    try {
+        const deletedListing = await Listing.findByIdAndDelete(req.params.id);
+
+        res.json(deletedListing);
+
+    } catch (error) {
+        res.status(500).json({
+            message: error.message
+        });
+    }
+});
+
 
 export default router;
