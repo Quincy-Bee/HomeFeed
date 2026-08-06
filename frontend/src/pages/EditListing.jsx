@@ -5,6 +5,8 @@ function EditListing() {
 
   const { id } = useParams();
 
+// Save the edited listing
+
   const [listing, setListing] = useState({
     title: "",
     price: "",
@@ -36,6 +38,38 @@ function EditListing() {
 
   };
 
+  const updateListing = (event) => {
+
+  event.preventDefault();
+
+
+  fetch(`http://localhost:3000/api/listings/${id}`, {
+
+    method: "PUT",
+
+    headers: {
+      "Content-Type": "application/json"
+    },
+
+    body: JSON.stringify(listing)
+
+  })
+
+  .then((response) => response.json())
+
+  .then((updatedListing) => {
+
+    console.log("Updated:", updatedListing);
+
+  })
+
+  .catch((error) => {
+
+    console.log("Update error:", error);
+
+  });
+
+};
 
   return (
 
@@ -44,7 +78,7 @@ function EditListing() {
       <h1>Edit Listing</h1>
 
 
-      <form>
+     <form onSubmit={updateListing}>
 
         <input
           name="title"
