@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function EditListing() {
 
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
 // Save the edited listing
 
@@ -57,11 +60,13 @@ function EditListing() {
 
   .then((response) => response.json())
 
-  .then((updatedListing) => {
+ .then((updatedListing) => {
 
-    console.log("Updated:", updatedListing);
+  console.log("Updated:", updatedListing);
 
-  })
+  navigate("/dashboard");
+
+})
 
   .catch((error) => {
 
