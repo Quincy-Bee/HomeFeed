@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import ListingCard from "./components/ListingCard";
-import "./App.css";
+import ListingCard from "../components/ListingCard";
 
-function App() {
+function Home() {
 
   const [listings, setListings] = useState([]);
 
@@ -24,18 +23,17 @@ function App() {
 
       <div className="listings">
 
-       {listings.map((listing) => (
-  <ListingCard 
-    key={listing._id}
-    listing={listing}
-  />
-))}
+        {listings.map((listing) => (
+          <ListingCard
+            key={listing._id}
+            listing={listing}
+          />
+        ))}
 
       </div>
 
     </div>
   );
-
 }
 
-export default App;
+export default Home;
