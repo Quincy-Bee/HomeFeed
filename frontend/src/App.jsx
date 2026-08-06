@@ -4,11 +4,11 @@ import ListingDetails from "./pages/ListingDetails";
 import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
 import EditListing from "./pages/EditListing";
+import CreateListing from "./pages/CreateListing";
 import "./App.css";
 
 function App() {
   return (
-
     <>
       <Navbar />
 
@@ -34,10 +34,14 @@ function App() {
           element={<EditListing />}
         />
 
+        <Route
+          path="/dashboard/create"
+          element={<CreateListing />}
+        />
+
       </Routes>
 
     </>
-
   );
 }
 

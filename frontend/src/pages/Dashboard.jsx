@@ -51,9 +51,7 @@ function Dashboard() {
             <h1>Agent Dashboard</h1>
 
             <Link to="/dashboard/create">
-                <button className="create-button">
-                    Create Listing
-                </button>
+                Create New
             </Link>
 
 
