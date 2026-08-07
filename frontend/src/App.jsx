@@ -39,12 +39,20 @@ function App() {
 
                 <Route
                     path="/dashboard/edit/:id"
-                    element={<EditListing />}
+                    element={
+                        <ProtectedRoute>
+                            <EditListing />
+                        </ProtectedRoute>
+                    }
                 />
 
                 <Route
                     path="/dashboard/create"
-                    element={<CreateListing />}
+                    element={
+                        <ProtectedRoute>
+                            <CreateListing />
+                        </ProtectedRoute>
+                    }
                 />
 
                 <Route
