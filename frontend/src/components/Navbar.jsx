@@ -21,6 +21,10 @@ function Navbar() {
                 Register
             </Link>
 
+            <Link to="/login">
+                Login
+            </Link>
+
         </nav>
     );
 }

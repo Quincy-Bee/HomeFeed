@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import EditListing from "./pages/EditListing";
 import CreateListing from "./pages/CreateListing";
 import Register from "./pages/Register";
+import Login from "./pages/Login";
 
 import "./App.css";
 
@@ -44,6 +45,11 @@ function App() {
                 <Route
                     path="/register"
                     element={<Register />}
+                />
+
+                <Route
+                    path="/login"
+                    element={<Login />}
                 />
 
             </Routes>
