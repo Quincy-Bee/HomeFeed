@@ -57,6 +57,7 @@ router.post("/login", async (req, res) => {
 
         }
 
+
         const passwordMatch = await bcrypt.compare(
             req.body.password,
             user.password
@@ -71,23 +72,23 @@ router.post("/login", async (req, res) => {
 
         }
 
+
         res.json({
 
             message: "Login successful",
 
             user: {
-
                 id: user._id,
-
                 name: user.name,
-
                 email: user.email
-
             }
 
         });
 
+
     } catch(error) {
+
+        console.log(error);
 
         res.status(500).json({
             message: error.message
