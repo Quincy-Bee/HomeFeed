@@ -1,16 +1,9 @@
-# React + Vite
+HomeFeed is a full-stack real estate marketplace application built using the MERN stack (MongoDB, Express.js, React, and Node.js).
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+HomeFeed allows agents and sellers to create accounts, add property listings, and manage their available properties. Sellers can create, update, and delete their listings through a private dashboard.
 
-Currently, two official plugins are available:
+Users must create an account and log in before they can add or manage property listings. Seller features are protected so only logged-in sellers can access the dashboard and listing management tools.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+The navigation menu changes depending on whether a user is logged in. Visitors can browse listings, register, or log in, while sellers have access to their dashboard and logout option.
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+This application includes seller registration, login/logout functionality, protected pages, and full CRUD operations (Create, Read, Update, Delete) for property listings.
