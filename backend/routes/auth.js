@@ -16,7 +16,6 @@ router.post("/register", async (req, res) => {
             10
         );
 
-
         const newUser = new User({
 
             name: req.body.name,
@@ -27,12 +26,66 @@ router.post("/register", async (req, res) => {
 
         });
 
-
         const savedUser = await newUser.save();
-
 
         res.json(savedUser);
 
+    } catch (error) {
+
+        res.status(500).json({
+            message: error.message
+        });
+    }
+});
+
+// Login user
+
+router.post("/login", async (req, res) => {
+
+    try {
+
+        const user = await User.findOne({
+            email: req.body.email
+        });
+
+
+        if (!user) {
+
+            return res.status(400).json({
+                message: "User not found"
+            });
+
+        }
+
+        const passwordMatch = await bcrypt.compare(
+            req.body.password,
+            user.password
+        );
+
+
+        if (!passwordMatch) {
+
+            return res.status(400).json({
+                message: "Incorrect password"
+            });
+
+        }
+
+        res.json({
+
+            message: "Login successful",
+
+            user: {
+
+                id: user._id,
+
+                name: user.name,
+
+                email: user.email
+
+            }
+
+        });
 
     } catch(error) {
 
@@ -43,6 +96,5 @@ router.post("/register", async (req, res) => {
     }
 
 });
-
 
 export default router;
