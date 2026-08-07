@@ -2,30 +2,24 @@ import { Link } from "react-router-dom";
 import "./Navbar.css";
 
 function Navbar() {
-
     return (
         <nav className="navbar">
 
-            <Link to="/" className="logo">
-                HomeFeed
+            <Link to="/">
+                Listings
             </Link>
 
-            <div className="nav-links">
+            <Link to="/dashboard">
+                Dashboard
+            </Link>
 
-                <Link to="/">
-                    Listings
-                </Link>
+            <Link to="/dashboard/create">
+                Create Listing
+            </Link>
 
-                <Route
-                    path="/dashboard/create"
-                    element={<CreateListing />}
-                />
-
-                <Link to="/dashboard">
-                    Dashboard
-                </Link>
-
-            </div>
+            <Link to="/register">
+                Register
+            </Link>
 
         </nav>
     );

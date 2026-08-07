@@ -5,44 +5,51 @@ import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
 import EditListing from "./pages/EditListing";
 import CreateListing from "./pages/CreateListing";
+import Register from "./pages/Register";
+
 import "./App.css";
 
 function App() {
-  return (
-    <>
-      <Navbar />
+    return (
+        <>
+            <Navbar />
 
-      <Routes>
+            <Routes>
 
-        <Route
-          path="/"
-          element={<Home />}
-        />
+                <Route
+                    path="/"
+                    element={<Home />}
+                />
 
-        <Route
-          path="/listings/:id"
-          element={<ListingDetails />}
-        />
+                <Route
+                    path="/listings/:id"
+                    element={<ListingDetails />}
+                />
 
-        <Route
-          path="/dashboard"
-          element={<Dashboard />}
-        />
+                <Route
+                    path="/dashboard"
+                    element={<Dashboard />}
+                />
 
-        <Route
-          path="/dashboard/edit/:id"
-          element={<EditListing />}
-        />
+                <Route
+                    path="/dashboard/edit/:id"
+                    element={<EditListing />}
+                />
 
-        <Route
-          path="/dashboard/create"
-          element={<CreateListing />}
-        />
+                <Route
+                    path="/dashboard/create"
+                    element={<CreateListing />}
+                />
 
-      </Routes>
+                <Route
+                    path="/register"
+                    element={<Register />}
+                />
 
-    </>
-  );
+            </Routes>
+
+        </>
+    );
 }
 
 export default App;
