@@ -7,6 +7,7 @@ import EditListing from "./pages/EditListing";
 import CreateListing from "./pages/CreateListing";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import "./App.css";
 
@@ -29,7 +30,11 @@ function App() {
 
                 <Route
                     path="/dashboard"
-                    element={<Dashboard />}
+                    element={
+                        <ProtectedRoute>
+                            <Dashboard />
+                        </ProtectedRoute>
+                    }
                 />
 
                 <Route
