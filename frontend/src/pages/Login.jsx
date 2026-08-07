@@ -2,14 +2,18 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Auth.css";
 
+
 function Login() {
 
     const navigate = useNavigate();
+
 
     const [user, setUser] = useState({
         email: "",
         password: ""
     });
+
+
 
     const handleChange = (event) => {
 
@@ -19,6 +23,10 @@ function Login() {
         });
 
     };
+
+
+
+    // Login user
 
     const loginUser = (event) => {
 
@@ -37,28 +45,27 @@ function Login() {
 
         })
 
+
             .then((response) => response.json())
 
 
-            // .then((data) => {
-
-            //     console.log("Login:", data);
             .then((data) => {
 
-    console.log("FULL LOGIN RESPONSE:", data);
 
+                console.log("Login successful:", data);
 
-
-                // save logged in user
 
                 localStorage.setItem(
                     "user",
                     JSON.stringify(data.user)
                 );
 
+
                 navigate("/dashboard");
 
+
             })
+
 
             .catch((error) => {
 
@@ -68,12 +75,16 @@ function Login() {
 
     };
 
+
+
     return (
 
         <div className="auth-container">
 
 
             <h1>Seller Login</h1>
+
+
 
             <form onSubmit={loginUser}>
 
@@ -85,6 +96,8 @@ function Login() {
                     onChange={handleChange}
                 />
 
+
+
                 <input
                     name="password"
                     type="password"
@@ -93,16 +106,21 @@ function Login() {
                     onChange={handleChange}
                 />
 
-                <button>
+
+
+                <button type="submit">
                     Login
                 </button>
 
+
             </form>
+
 
         </div>
 
     );
 
 }
+
 
 export default Login;
