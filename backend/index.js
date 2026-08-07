@@ -34,6 +34,9 @@ app.get("/", (req, res) => {
 // Listing routes
 app.use("/api/listings", listingRoutes);
 
+// authRoutes for user authorization
+app.use("/api/auth", authRoutes);
+
 
 // Start server
 app.listen(3000, () => {
