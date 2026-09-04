@@ -23,7 +23,7 @@ function EditListing() {
 
   useEffect(() => {
 
-    fetch(`http://localhost:3000/api/listings/${id}`)
+    fetch(`/api/listings/${id}`)
       .then((response) => response.json())
       .then((data) => {
         setListing(data);
@@ -46,7 +46,7 @@ function EditListing() {
   event.preventDefault();
 
 
-  fetch(`http://localhost:3000/api/listings/${id}`, {
+  fetch(`/api/listings/${id}`, {
 
     method: "PUT",
 

@@ -9,7 +9,7 @@ function Dashboard() {
 
     useEffect(() => {
 
-        fetch("http://localhost:3000/api/listings")
+        fetch("/api/listings")
 
             .then((response) => response.json())
 
@@ -27,7 +27,7 @@ function Dashboard() {
 
     const deleteListing = (id) => {
 
-        fetch(`http://localhost:3000/api/listings/${id}`, {
+        fetch(`/api/listings/${id}`, {
 
             method: "DELETE",
 

@@ -33,7 +33,7 @@ function Login() {
         event.preventDefault();
 
 
-        fetch("http://localhost:3000/api/auth/login", {
+        fetch("/api/auth/login", {
 
             method: "POST",
 

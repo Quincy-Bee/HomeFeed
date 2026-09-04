@@ -6,7 +6,7 @@ function Home() {
   const [listings, setListings] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/listings")
+    fetch("/api/listings")
       .then((response) => response.json())
       .then((data) => {
         setListings(data);

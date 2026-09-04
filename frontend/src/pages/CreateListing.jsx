@@ -40,7 +40,7 @@ function CreateListing() {
 
 
 
-    fetch("http://localhost:3000/api/listings", {
+    fetch("/api/listings", {
 
       method: "POST",
 
