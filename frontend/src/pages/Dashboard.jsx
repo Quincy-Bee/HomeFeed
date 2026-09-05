@@ -7,21 +7,25 @@ function Dashboard() {
     const [listings, setListings] = useState([]);
 
 
-    useEffect(() => {
+   useEffect(() => {
+    fetch("/api/listings")
+        .then((response) => response.json())
+        .then((data) => {
+            console.log("LISTINGS DATA:", data);
 
-        fetch("/api/listings")
-
-            .then((response) => response.json())
-
-            .then((data) => {
+            if (Array.isArray(data)) {
                 setListings(data);
-            })
-
-            .catch((error) => {
-                console.log("Error fetching listings:", error);
-            });
-
-    }, []);
+            } else if (Array.isArray(data.listings)) {
+                setListings(data.listings);
+            } else {
+                console.error("Listings response is not an array:", data);
+                setListings([]);
+            }
+        })
+        .catch((error) => {
+            console.log("Error fetching listings:", error);
+        });
+}, []);
 
 
 
