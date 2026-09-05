@@ -3,37 +3,72 @@ import "./ListingCard.css";
 
 function ListingCard({ listing }) {
 
-  return (
+    const listingHeading =
+        listing.listingType === "For Rent"
+            ? "Rental"
+            : listing.propertyType;
 
-    <Link 
-      to={`/listings/${listing._id}`} 
-      className="listing-link"
-    >
+    const agentName =
+        listing.owner?.name || "";
 
-      <div className="card">
+    const brokerage =
+        listing.owner?.brokerage || "";
 
-        <img 
-          src={listing.image}
-          alt={listing.title}
-        />
+    const image =
+        listing.images?.[0] || "";
 
-        <h2>{listing.title}</h2>
+    return (
+        <Link
+            to={`/listings/${listing._id}`}
+            className="listing-link"
+        >
+            <div className="card">
 
-        <p className="price">
-          ${listing.price.toLocaleString()}
-        </p>
+                {image ? (
+                    <img
+                        src={image}
+                        alt={`${listingHeading} in ${listing.neighborhood}`}
+                    />
+                ) : (
+                    <div className="listing-image-placeholder">
+                        No Image Available
+                    </div>
+                )}
 
-        <p>{listing.address}</p>
+                <h2>
+                    {listingHeading} in {listing.neighborhood}
+                </h2>
 
-        <p>
-          {listing.bedrooms} Bed • {listing.bathrooms} Bath
-        </p>
+                <p className="price">
+                    ${Number(listing.price).toLocaleString()}
+                    {listing.listingType === "For Rent" && "/month"}
+                </p>
 
-      </div>
+                <p>
+                    {listing.address}
+                    {listing.apartmentNumber &&
+                        ` ${listing.apartmentNumber}`}
+                </p>
 
-    </Link>
+                <p>
+                    {listing.bedrooms} Bed • {listing.bathrooms} Bath
+                </p>
 
-  );
+                {brokerage && (
+                    <p className="listing-agent">
+                        Listed by {brokerage}
+                    </p>
+                )}
+
+                {!brokerage && agentName && (
+                    <p className="listing-agent">
+                        Listed by {agentName}
+                    </p>
+                )}
+
+            </div>
+        </Link>
+    );
 }
 
 export default ListingCard;

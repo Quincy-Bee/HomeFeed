@@ -1,0 +1,233 @@
+.create-listing {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 50px 30px 80px;
+  font-family: Helvetica, Arial, sans-serif;
+  color: #111;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.create-listing-header {
+  margin-bottom: 40px;
+}
+
+.create-listing-header h1 {
+  margin: 0 0 8px;
+  font-size: 42px;
+  font-weight: 300;
+  letter-spacing: -1px;
+}
+
+.create-listing-header p {
+  margin: 0;
+  color: #666;
+  font-size: 15px;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.create-listing-form {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+}
+
+
+/* =========================================
+   SECTIONS
+========================================= */
+
+.form-section {
+  padding: 30px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.form-section h2 {
+  margin: 0 0 25px;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+
+/* =========================================
+   FORM ROWS
+========================================= */
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.location-row {
+  grid-template-columns: 2fr 1fr 1.5fr;
+}
+
+
+/* =========================================
+   FORM GROUP
+========================================= */
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+}
+
+
+/* =========================================
+   INPUTS
+========================================= */
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #d5d5d5;
+  border-radius: 0;
+  background: #fff;
+  color: #111;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #111;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #999;
+}
+
+
+/* =========================================
+   SELECT
+========================================= */
+
+.form-group select {
+  cursor: pointer;
+}
+
+
+/* =========================================
+   TEXTAREA
+========================================= */
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 150px;
+  line-height: 1.5;
+}
+
+
+/* =========================================
+   HELP TEXT
+========================================= */
+
+.form-help {
+  margin: 0;
+  color: #777;
+  font-size: 12px;
+}
+
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 25px 30px;
+}
+
+.cancel-button,
+.publish-button {
+  padding: 13px 22px;
+  border: none;
+  border-radius: 0;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.cancel-button {
+  background: #eeeeee;
+  color: #111;
+}
+
+.publish-button {
+  background: #111;
+  color: #fff;
+}
+
+.cancel-button:hover,
+.publish-button:hover {
+  opacity: 0.75;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 700px) {
+
+  .create-listing {
+    padding: 30px 15px 60px;
+  }
+
+  .create-listing-header {
+    margin-bottom: 30px;
+  }
+
+  .create-listing-header h1 {
+    font-size: 34px;
+  }
+
+  .form-section {
+    padding: 25px 20px;
+  }
+
+  .form-row,
+  .location-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+    padding: 20px;
+  }
+
+  .cancel-button,
+  .publish-button {
+    width: 100%;
+  }
+
+}

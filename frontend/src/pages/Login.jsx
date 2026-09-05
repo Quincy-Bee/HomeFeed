@@ -1,40 +1,30 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Auth.css";
 
-
 function Login() {
 
     const navigate = useNavigate();
-
 
     const [user, setUser] = useState({
         email: "",
         password: ""
     });
 
-
-
     const handleChange = (event) => {
-
         setUser({
             ...user,
             [event.target.name]: event.target.value
         });
-
     };
-
-
 
     // Login user
 
     const loginUser = (event) => {
-
         event.preventDefault();
 
-
         fetch("/api/auth/login", {
-
             method: "POST",
 
             headers: {
@@ -42,52 +32,42 @@ function Login() {
             },
 
             body: JSON.stringify(user)
-
         })
-
-
             .then((response) => response.json())
-
-
             .then((data) => {
 
+                console.log("Login response:", data);
 
-                console.log("Login successful:", data);
+                if (!data.token) {
+                    console.error("No authentication token received.");
+                    return;
+                }
 
+                // Save JWT token
+                localStorage.setItem(
+                    "token",
+                    data.token
+                );
 
+                // Save user information
                 localStorage.setItem(
                     "user",
                     JSON.stringify(data.user)
                 );
 
-
                 navigate("/dashboard");
-
-
             })
-
-
             .catch((error) => {
-
                 console.log("Login error:", error);
-
             });
-
     };
 
-
-
     return (
-
         <div className="auth-container">
 
-
-            <h1>Seller Login</h1>
-
-
+            <h1>Agent Sign In</h1>
 
             <form onSubmit={loginUser}>
-
 
                 <input
                     name="email"
@@ -95,8 +75,6 @@ function Login() {
                     value={user.email}
                     onChange={handleChange}
                 />
-
-
 
                 <input
                     name="password"
@@ -106,21 +84,14 @@ function Login() {
                     onChange={handleChange}
                 />
 
-
-
                 <button type="submit">
                     Login
                 </button>
 
-
             </form>
 
-
         </div>
-
     );
-
 }
-
 
 export default Login;

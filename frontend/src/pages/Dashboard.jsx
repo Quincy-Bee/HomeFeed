@@ -1,172 +1,384 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Dashboard.css";
 
 function Dashboard() {
 
     const [listings, setListings] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
+    const user = JSON.parse(
+        localStorage.getItem("user") || "{}"
+    );
 
-   useEffect(() => {
-    fetch("/api/listings")
-        .then((response) => response.json())
-        .then((data) => {
-            console.log("LISTINGS DATA:", data);
+    const token = localStorage.getItem("token");
 
-            if (Array.isArray(data)) {
-                setListings(data);
-            } else if (Array.isArray(data.listings)) {
-                setListings(data.listings);
-            } else {
-                console.error("Listings response is not an array:", data);
-                setListings([]);
-            }
-        })
-        .catch((error) => {
-            console.log("Error fetching listings:", error);
-        });
-}, []);
+    useEffect(() => {
 
+        const fetchListings = async () => {
 
+            try {
 
-    const deleteListing = (id) => {
-
-        fetch(`/api/listings/${id}`, {
-
-            method: "DELETE",
-
-        })
-
-            .then((response) => response.json())
-
-            .then(() => {
-
-                setListings((currentListings) =>
-                    currentListings.filter(
-                        (listing) => listing._id !== id
-                    )
+                const response = await fetch(
+                    "/api/listings/my-listings",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
                 );
 
-            })
+                const data = await response.json();
 
-            .catch((error) => {
+                if (!response.ok) {
+                    throw new Error(
+                        data.message ||
+                        "Failed to load listings"
+                    );
+                }
 
-                console.log("Delete error:", error);
+                setListings(data);
 
-            });
+            } catch (error) {
+
+                console.error(
+                    "Dashboard listings error:",
+                    error
+                );
+
+                setError(error.message);
+
+            } finally {
+
+                setLoading(false);
+
+            }
+        };
+
+        fetchListings();
+
+    }, [token]);
+
+
+    // ==========================================
+    // DELETE LISTING
+    // ==========================================
+
+    const deleteListing = async (id) => {
+
+        const confirmed = window.confirm(
+            "Are you sure you want to delete this listing?"
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+
+            const response = await fetch(
+                `/api/listings/${id}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    data.message ||
+                    "Failed to delete listing"
+                );
+            }
+
+            setListings((currentListings) =>
+                currentListings.filter(
+                    (listing) =>
+                        listing._id !== id
+                )
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Delete listing error:",
+                error
+            );
+
+            alert(error.message);
+
+        }
+    };
+
+
+    // ==========================================
+    // LISTING HEADING
+    // ==========================================
+
+    const getListingHeading = (listing) => {
+
+        const type =
+            listing.listingType === "For Rent"
+                ? "Rental"
+                : listing.propertyType;
+
+        if (type && listing.neighborhood) {
+            return `${type} in ${listing.neighborhood}`;
+        }
+
+        return listing.title || "Listing";
 
     };
 
 
+    // ==========================================
+    // LOADING
+    // ==========================================
+
+    if (loading) {
+
+        return (
+            <div className="dashboard">
+                <h2>Loading listings...</h2>
+            </div>
+        );
+
+    }
+
+
+    // ==========================================
+    // ERROR
+    // ==========================================
+
+    if (error) {
+
+        return (
+            <div className="dashboard">
+                <h2>{error}</h2>
+            </div>
+        );
+
+    }
+
+
+    // ==========================================
+    // DASHBOARD
+    // ==========================================
 
     return (
 
         <div className="dashboard">
 
+            {/* ==========================================
+                HEADER
+            ========================================== */}
 
             <div className="dashboard-header">
 
-                <h1>Agent Dashboard</h1>
+                <div>
 
+                    <h1>
+                        Dashboard
+                    </h1>
+
+                    {user.role === "admin" && (
+                        <p>
+                            Admin • All Listings
+                        </p>
+                    )}
+
+                </div>
 
                 <Link
-                    className="create-button"
                     to="/dashboard/create"
+                    className="create-button"
                 >
                     Create Listing
                 </Link>
 
-
             </div>
 
 
+            {/* ==========================================
+                EMPTY STATE
+            ========================================== */}
 
-            <div className="dashboard-listings">
+            {listings.length === 0 ? (
 
+                <div className="empty-dashboard">
 
-                {listings.map((listing) => (
+                    <h2>
+                        No listings yet.
+                    </h2>
 
-
-                    <div
-                        className="dashboard-card"
-                        key={listing._id}
+                    <Link
+                        to="/dashboard/create"
+                        className="create-button"
                     >
+                        Create Your First Listing
+                    </Link>
+
+                </div>
+
+            ) : (
+
+                /* ==========================================
+                   LISTINGS
+                ========================================== */
+
+                <div className="dashboard-listings">
+
+                    {listings.map((listing) => {
+
+                        const firstImage =
+                            listing.images?.[0] || "";
+
+                        return (
+
+                            <div
+                                className="dashboard-card"
+                                key={listing._id}
+                            >
+
+                                {/* ==========================================
+                                    PROPERTY IMAGE
+                                ========================================== */}
+
+                                {firstImage ? (
+
+                                    <img
+                                        src={firstImage}
+                                        alt={getListingHeading(
+                                            listing
+                                        )}
+                                    />
+
+                                ) : (
+
+                                    <div className="dashboard-image-placeholder">
+                                        No Image
+                                    </div>
+
+                                )}
 
 
-                        <img
-                            src={listing.image}
-                            alt={listing.title}
-                        />
+                                {/* ==========================================
+                                    LISTING CONTENT
+                                ========================================== */}
+
+                                <div className="dashboard-card-content">
+
+                                    <h3>
+                                        {getListingHeading(
+                                            listing
+                                        )}
+                                    </h3>
 
 
+                                    <p>
+                                        {listing.address}
 
-                        <div className="dashboard-card-content">
-
-
-                            <h3>
-                                {listing.title}
-                            </h3>
-
+                                        {listing.apartmentNumber &&
+                                            ` ${listing.apartmentNumber}`}
+                                    </p>
 
 
-                            <p className="dashboard-price">
-                                ${listing.price}
-                            </p>
+                                    <p>
+                                        {listing.city},{" "}
+                                        {listing.state}{" "}
+                                        {listing.zipCode}
+                                    </p>
 
 
+                                    <p className="dashboard-price">
 
-                            <p>
-                                {listing.address}
-                            </p>
+                                        $
+                                        {Number(
+                                            listing.price
+                                        ).toLocaleString()}
 
+                                        {listing.listingType ===
+                                            "For Rent" &&
+                                            "/month"}
 
-
-                            <p>
-                                {listing.bedrooms} Beds | {listing.bathrooms} Baths
-                            </p>
-
-
-
-                            <div className="dashboard-actions">
+                                    </p>
 
 
-                                <Link
-                                    className="edit-button"
-                                    to={`/dashboard/edit/${listing._id}`}
-                                >
-                                    Edit
-                                </Link>
+                                    <p>
+                                        {listing.bedrooms} Bed •{" "}
+                                        {listing.bathrooms} Bath
+                                    </p>
 
 
+                                    {/* ==========================================
+                                        ADMIN OWNER INFORMATION
+                                    ========================================== */}
 
-                                <button
-                                    className="delete-button"
-                                    onClick={() => deleteListing(listing._id)}
-                                >
-                                    Delete
-                                </button>
+                                    {user.role === "admin" &&
+                                        listing.owner && (
 
+                                            <p className="dashboard-listed-by">
+
+                                                Listed by{" "}
+
+                                                {listing.owner
+                                                    .brokerage ||
+                                                    listing.owner
+                                                        .name}
+
+                                            </p>
+
+                                        )}
+
+
+                                    {/* ==========================================
+                                        ACTIONS
+                                    ========================================== */}
+
+                                    <div className="dashboard-actions">
+
+                                        <Link
+                                            to={`/dashboard/edit/${listing._id}`}
+                                            className="edit-button"
+                                        >
+                                            Edit
+                                        </Link>
+
+
+                                        <button
+                                            type="button"
+                                            className="delete-button"
+                                            onClick={() =>
+                                                deleteListing(
+                                                    listing._id
+                                                )
+                                            }
+                                        >
+                                            Delete
+                                        </button>
+
+                                    </div>
+
+                                </div>
 
                             </div>
 
+                        );
 
-                        </div>
+                    })}
 
+                </div>
 
-                    </div>
-
-
-                ))}
-
-
-            </div>
-
+            )}
 
         </div>
 
     );
-
 }
-
 
 export default Dashboard;
