@@ -1,44 +1,103 @@
+
 import mongoose from "mongoose";
 
+const listingSchema = new mongoose.Schema(
+    {
+        listingType: {
+            type: String,
+            enum: ["For Sale", "For Rent"],
+            required: true
+        },
 
-// Schema for every listing
-const listingSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-  },
+        propertyType: {
+            type: String,
+            enum: ["Condo", "Co-op", "Townhouse", "Rental"],
+            required: true
+        },
 
-  price: {
-    type: Number,
-    required: true,
-  },
+        address: {
+            type: String,
+            required: true
+        },
 
-  address: {
-    type: String,
-    required: true,
-  },
+        apartmentNumber: {
+            type: String,
+            default: ""
+        },
 
-  bedrooms: {
-    type: Number,
-    default: 0,
-  },
+        borough: {
+            type: String,
+            enum: [
+                "Manhattan",
+                "Brooklyn",
+                "Queens",
+                "Bronx",
+                "Staten Island"
+            ],
+            required: true
+        },
 
-  bathrooms: {
-    type: Number,
-    default: 0,
-  },
+        neighborhood: {
+            type: String,
+            required: true
+        },
 
-  description: {
-    type: String,
-  },
-  image: {
-    type: String,
-  },
-});
+        city: {
+            type: String,
+            required: true
+        },
 
-// Create the Listing model
-const Listing = mongoose.model("Listing", listingSchema);
+        state: {
+            type: String,
+            required: true,
+            default: "NY"
+        },
+
+        zipCode: {
+            type: String,
+            required: true
+        },
+
+        price: {
+            type: Number,
+            required: true
+        },
+
+        bedrooms: {
+            type: Number,
+            default: 0
+        },
+
+        bathrooms: {
+            type: Number,
+            default: 0
+        },
+
+        description: {
+            type: String,
+            default: ""
+        },
+
+        images: {
+            type: [String],
+            default: []
+        },
+
+        owner: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true
+        }
+    },
+
+    {
+        timestamps: true
+    }
+);
+
+const Listing = mongoose.model(
+    "Listing",
+    listingSchema
+);
 
 export default Listing;
-
-
