@@ -6,6 +6,8 @@
 
 
 .dashboard-header {
+  font-family:Arial, Helvetica, sans-serif;
+  font-weight: 100;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -15,6 +17,9 @@
 
 .dashboard-header h1 {
   font-size: 36px;
+  font-family:Arial, Helvetica, sans-serif;
+  font-weight: 100;
+  font-variant-caps:all-small-caps;
 }
 
 
@@ -22,7 +27,7 @@
   background: black;
   color: white;
   padding: 12px 20px;
-  border-radius: 8px;
+  border-radius: 0px;
   text-decoration: none;
   font-size: 15px;
 }
@@ -44,7 +49,7 @@
 
 .dashboard-card {
   background: white;
-  border-radius: 12px;
+  border-radius: 5px;
   overflow: hidden;
   box-shadow: 0 5px 20px rgba(0,0,0,0.08);
 }
@@ -72,8 +77,9 @@
 
 
 .dashboard-price {
-  font-size: 20px;
-  font-weight: bold;
+  font-family:'Times New Roman', Times, serif;
+  font-size: 25px;
+  font-weight:100;
 }
 
 
@@ -89,7 +95,7 @@
 .edit-button,
 .delete-button {
   padding: 10px 16px;
-  border-radius: 6px;
+  border-radius: 0px;
   text-decoration: none;
   cursor: pointer;
   border: none;
@@ -98,7 +104,7 @@
 
 
 .edit-button {
-  background: black;
+  background: rgb(12, 12, 12);
   color: white;
 }
 

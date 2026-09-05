@@ -51,7 +51,6 @@
     border-radius: 12px;
 }
 
-
 .contact-box button {
     padding: 12px 25px;
     border: none;
@@ -60,7 +59,6 @@
     border-radius: 6px;
     cursor: pointer;
 }
-
 
 .contact-box button:hover {
     opacity: .8;
