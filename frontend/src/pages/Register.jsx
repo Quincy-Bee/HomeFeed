@@ -9,9 +9,14 @@ function Register() {
     const [user, setUser] = useState({
         name: "",
         email: "",
-        password: ""
+        phone: "",
+        brokerage: "",
+        headshot: "",
+        password: "",
+        confirmPassword: ""
     });
 
+    const [error, setError] = useState("");
 
     const handleChange = (event) => {
 
@@ -22,39 +27,56 @@ function Register() {
 
     };
 
-
-    const registerUser = (event) => {
+    const registerUser = async (event) => {
 
         event.preventDefault();
 
+        setError("");
 
-        fetch("/api/auth/register", {
+        if (user.password !== user.confirmPassword) {
+            setError("Passwords do not match.");
+            return;
+        }
 
-            method: "POST",
+        try {
 
-            headers: {
-                "Content-Type": "application/json"
-            },
+            const response = await fetch("/api/auth/register", {
 
-            body: JSON.stringify(user)
+                method: "POST",
 
-        })
+                headers: {
+                    "Content-Type": "application/json"
+                },
 
-            .then((response) => response.json())
-
-            .then((data) => {
-
-                console.log("Registered:", data);
-
-                navigate("/login");
-
-            })
-
-            .catch((error) => {
-
-                console.log("Register error:", error);
+                body: JSON.stringify({
+                    name: user.name,
+                    email: user.email,
+                    phone: user.phone,
+                    brokerage: user.brokerage,
+                    headshot: user.headshot,
+                    password: user.password
+                })
 
             });
+
+            const data = await response.json();
+
+            console.log("Registered:", data);
+
+            if (!response.ok) {
+                setError(data.message || "Registration failed.");
+                return;
+            }
+
+            navigate("/login");
+
+        } catch (error) {
+
+            console.log("Register error:", error);
+
+            setError("Something went wrong. Please try again.");
+
+        }
 
     };
 
@@ -62,23 +84,49 @@ function Register() {
 
         <div className="auth-container">
 
-            <h1>Create Seller Account</h1>
-
+            <h1>Create Your HomeFeed Account</h1>
 
             <form onSubmit={registerUser}>
 
-
                 <input
                     name="name"
-                    placeholder="Name"
+                    placeholder="Full Name"
                     value={user.name}
                     onChange={handleChange}
+                    required
                 />
 
                 <input
                     name="email"
+                    type="email"
                     placeholder="Email"
                     value={user.email}
+                    onChange={handleChange}
+                    required
+                />
+
+                <input
+                    name="phone"
+                    type="tel"
+                    placeholder="Phone Number"
+                    value={user.phone}
+                    onChange={handleChange}
+                    required
+                />
+
+                <input
+                    name="brokerage"
+                    placeholder="Brokerage Name"
+                    value={user.brokerage}
+                    onChange={handleChange}
+                    required
+                />
+
+                <input
+                    name="headshot"
+                    type="url"
+                    placeholder="Headshot URL"
+                    value={user.headshot}
                     onChange={handleChange}
                 />
 
@@ -88,10 +136,26 @@ function Register() {
                     placeholder="Password"
                     value={user.password}
                     onChange={handleChange}
+                    required
                 />
 
-                <button>
-                    Register
+                <input
+                    name="confirmPassword"
+                    type="password"
+                    placeholder="Confirm Password"
+                    value={user.confirmPassword}
+                    onChange={handleChange}
+                    required
+                />
+
+                {error && (
+                    <p className="auth-error">
+                        {error}
+                    </p>
+                )}
+
+                <button type="submit">
+                    Create Account
                 </button>
 
             </form>

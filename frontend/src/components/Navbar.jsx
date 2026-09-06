@@ -7,15 +7,22 @@ function Navbar() {
 
     const navigate = useNavigate();
 
+    const [user, setUser] = useState(() => {
 
-    const [user, setUser] = useState(
-        localStorage.getItem("user")
-    );
+        const savedUser = localStorage.getItem("user");
+
+        return savedUser
+            ? JSON.parse(savedUser)
+            : null;
+
+    });
+
 
 
     const logout = () => {
 
         localStorage.removeItem("user");
+        localStorage.removeItem("token");
 
         setUser(null);
 
@@ -26,13 +33,14 @@ function Navbar() {
 
     return (
 
+
         <nav className="navbar">
 
+            
 
             <Link to="/">
                 Listings
             </Link>
-
 
 
             {user ? (
@@ -51,8 +59,11 @@ function Navbar() {
                         Logout
                     </button>
 
-                </>
+                    <span className="welcome-message">
+                        Hello, {user.name}
+                    </span>
 
+                </>
 
             ) : (
 
@@ -71,12 +82,12 @@ function Navbar() {
 
             )}
 
+            
 
         </nav>
 
     );
 
 }
-
 
 export default Navbar;
