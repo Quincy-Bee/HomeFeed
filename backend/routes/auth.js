@@ -21,6 +21,9 @@ router.post("/register", async (req, res) => {
         const newUser = new User({
             name: req.body.name,
             email: req.body.email,
+            phone: req.body.phone,
+            brokerage: req.body.brokerage,
+            headshot: req.body.headshot,
             password: hashedPassword
         });
 
@@ -32,11 +35,16 @@ router.post("/register", async (req, res) => {
                 id: savedUser._id,
                 name: savedUser.name,
                 email: savedUser.email,
+                phone: savedUser.phone,
+                brokerage: savedUser.brokerage,
+                headshot: savedUser.headshot,
                 role: savedUser.role
             }
         });
 
     } catch (error) {
+
+        console.log("Registration error:", error);
 
         res.status(500).json({
             message: error.message
@@ -63,7 +71,6 @@ router.post("/login", async (req, res) => {
             });
         }
 
-
         const passwordMatch = await bcrypt.compare(
             req.body.password,
             user.password
@@ -74,7 +81,6 @@ router.post("/login", async (req, res) => {
                 message: "Incorrect password"
             });
         }
-
 
         // Create JWT
         const token = jwt.sign(
@@ -88,7 +94,6 @@ router.post("/login", async (req, res) => {
             }
         );
 
-
         res.json({
 
             message: "Login successful",
@@ -99,6 +104,9 @@ router.post("/login", async (req, res) => {
                 id: user._id,
                 name: user.name,
                 email: user.email,
+                phone: user.phone,
+                brokerage: user.brokerage,
+                headshot: user.headshot,
                 role: user.role
             }
 
@@ -106,7 +114,7 @@ router.post("/login", async (req, res) => {
 
     } catch (error) {
 
-        console.log(error);
+        console.log("Login error:", error);
 
         res.status(500).json({
             message: error.message
