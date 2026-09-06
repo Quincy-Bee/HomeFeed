@@ -1,0 +1,118 @@
+.fsbo {
+    position: relative;
+    width: 100%;
+    min-height: 350px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 80px 24px;
+
+    background-image: url("https://images.unsplash.com/photo-1753911372198-50b1b254ad4d?auto=format&fit=crop&fm=jpg&q=80&w=2000");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.fsbo::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+}
+
+.fsbo-content {
+    position: relative;
+    z-index: 2;
+
+    width: 100%;
+    max-width: 900px;
+
+    margin: 0 auto;
+
+    text-align: center;
+}
+
+.fsbo h2 {
+    margin: 0 0 28px;
+
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+
+    color: #fff;
+}
+
+.fsbo-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.fsbo-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 180px;
+    padding: 14px 22px;
+
+    border: 1px solid #fff;
+
+    background: #fff;
+    color: #111;
+
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+
+    text-decoration: none;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.fsbo-link:hover {
+    background: transparent;
+    color: #fff;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .fsbo {
+        min-height: 400px;
+        padding: 60px 20px;
+    }
+
+    .fsbo-content {
+        max-width: 500px;
+    }
+
+    .fsbo h2 {
+        margin-bottom: 24px;
+        font-size: 25px;
+        line-height: 1.3;
+    }
+
+    .fsbo-links {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .fsbo-link {
+        width: 100%;
+    }
+}
