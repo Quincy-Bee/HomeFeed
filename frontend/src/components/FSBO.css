@@ -2,18 +2,14 @@
     position: relative;
     width: 100%;
     min-height: 350px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     padding: 80px 24px;
-
     background-image: url("https://images.unsplash.com/photo-1753911372198-50b1b254ad4d?auto=format&fit=crop&fm=jpg&q=80&w=2000");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-
     box-sizing: border-box;
     overflow: hidden;
 }
