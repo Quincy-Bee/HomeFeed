@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Footer from "./components/Footer";
 import SocialMedia from "./components/SocialMedia";
+import NYCNeighborhoods from "./pages/NYCNeighborhoods";
 
 import "./App.css";
 
@@ -23,6 +24,11 @@ function App() {
                 <Route
                     path="/"
                     element={<Home />}
+                />
+
+                <Route
+                    path="/nyc-neighborhoods"
+                    element={<NYCNeighborhoods />}
                 />
 
                 <Route
@@ -68,7 +74,8 @@ function App() {
                 />
 
             </Routes>
-            <Footer/> 
+
+            <Footer />
         </>
     );
 }

@@ -455,17 +455,17 @@ function Home() {
 
                             return (
                                 listingNeighborhood ===
-                                    selectedLocation ||
+                                selectedLocation ||
 
                                 listingBorough ===
-                                    selectedLocation ||
+                                selectedLocation ||
 
                                 listingAddress.includes(
                                     selectedLocation
                                 ) ||
 
                                 listingCity ===
-                                    selectedLocation ||
+                                selectedLocation ||
 
                                 listingZip.includes(
                                     selectedLocation
@@ -489,7 +489,7 @@ function Home() {
             if (
                 search.minPrice !== "" &&
                 Number(listing.price) <
-                    Number(search.minPrice)
+                Number(search.minPrice)
             ) {
                 return false;
             }
@@ -502,7 +502,7 @@ function Home() {
             if (
                 search.maxPrice !== "" &&
                 Number(listing.price) >
-                    Number(search.maxPrice)
+                Number(search.maxPrice)
             ) {
                 return false;
             }
@@ -571,9 +571,7 @@ function Home() {
                         onSubmit={handleSearch}
                     >
 
-                        {/* =========================================
-                            BUY / RENT
-                        ========================================= */}
+                        {/* BUY / RENT */}
 
                         <div className="search-type">
 
@@ -581,7 +579,7 @@ function Home() {
                                 type="button"
                                 className={
                                     search.listingType ===
-                                    "For Sale"
+                                        "For Sale"
                                         ? "active"
                                         : ""
                                 }
@@ -596,12 +594,11 @@ function Home() {
                                 Buy
                             </button>
 
-
                             <button
                                 type="button"
                                 className={
                                     search.listingType ===
-                                    "For Rent"
+                                        "For Rent"
                                         ? "active"
                                         : ""
                                 }
@@ -619,9 +616,7 @@ function Home() {
                         </div>
 
 
-                        {/* =========================================
-                            LOCATION
-                        ========================================= */}
+                        {/* LOCATION */}
 
                         <div
                             className="search-field location-field"
@@ -631,7 +626,6 @@ function Home() {
                             <label>
                                 Location
                             </label>
-
 
                             <button
                                 type="button"
@@ -664,16 +658,14 @@ function Home() {
                                             Select locations
                                         </span>
 
-                                        {search.locations.length >
-                                            0 && (
+                                        {search.locations.length > 0 && (
                                             <button
                                                 type="button"
                                                 className="clear-locations"
                                                 onClick={() =>
                                                     setSearch({
                                                         ...search,
-                                                        locations:
-                                                            []
+                                                        locations: []
                                                     })
                                                 }
                                             >
@@ -684,16 +676,13 @@ function Home() {
                                     </div>
 
 
-                                    {/* =========================================
-                                        BOROUGHS
-                                    ========================================= */}
+                                    {/* BOROUGHS */}
 
                                     <div className="location-group">
 
                                         <div className="location-group-title">
                                             Boroughs
                                         </div>
-
 
                                         {boroughs.map(
                                             (borough) => {
@@ -748,9 +737,7 @@ function Home() {
                                     </div>
 
 
-                                    {/* =========================================
-                                        INDIVIDUAL NEIGHBORHOODS
-                                    ========================================= */}
+                                    {/* NEIGHBORHOODS */}
 
                                     {boroughs.map(
                                         (borough) => (
@@ -767,7 +754,6 @@ function Home() {
                                                         borough
                                                     }
                                                 </div>
-
 
                                                 {locations[
                                                     borough
@@ -818,9 +804,7 @@ function Home() {
                         </div>
 
 
-                        {/* =========================================
-                            MIN PRICE
-                        ========================================= */}
+                        {/* MIN PRICE */}
 
                         <div className="search-field">
 
@@ -869,9 +853,7 @@ function Home() {
                         </div>
 
 
-                        {/* =========================================
-                            MAX PRICE
-                        ========================================= */}
+                        {/* MAX PRICE */}
 
                         <div className="search-field">
 
@@ -920,9 +902,7 @@ function Home() {
                         </div>
 
 
-                        {/* =========================================
-                            SEARCH BUTTON
-                        ========================================= */}
+                        {/* SEARCH BUTTON */}
 
                         <button
                             type="submit"
@@ -932,139 +912,6 @@ function Home() {
                         </button>
 
                     </form>
-
-                </div>
-
-            </section>
-
-
-            {/* =========================================
-                FSBO
-            ========================================= */}
-
-            <FSBO />
-
-
-            {/* =========================================
-                HOMEFEED FEATURES
-            ========================================= */}
-
-            <section className="home-features">
-
-                <div className="home-features-grid">
-
-                    {/* =========================================
-                        RENT
-                    ========================================= */}
-
-                    <div className="home-feature-card">
-
-                        <div className="home-feature-content">
-
-                            <p className="home-feature-eyebrow">
-                                RENT
-                            </p>
-
-                            <h2>
-                                Rent a NYC apartment
-                            </h2>
-
-                            <p>
-                                Explore apartments across New York
-                                City and narrow your search by
-                                location, price, and the features
-                                that matter most to you.
-                            </p>
-
-                            <button
-                                type="button"
-                                className="home-feature-link"
-                                onClick={() =>
-                                    handleQuickSearch(
-                                        "For Rent"
-                                    )
-                                }
-                            >
-                                Search Rentals
-                            </button>
-
-                        </div>
-
-                    </div>
-
-
-                    {/* =========================================
-                        BUY
-                    ========================================= */}
-
-                    <div className="home-feature-card">
-
-                        <div className="home-feature-content">
-
-                            <p className="home-feature-eyebrow">
-                                BUY
-                            </p>
-
-                            <h2>
-                                Buy with confidence
-                            </h2>
-
-                            <p>
-                                Find your next home and explore
-                                properties across NYC. Search by
-                                neighborhood, price, and property
-                                type to find the right fit.
-                            </p>
-
-                            <button
-                                type="button"
-                                className="home-feature-link"
-                                onClick={() =>
-                                    handleQuickSearch(
-                                        "For Sale"
-                                    )
-                                }
-                            >
-                                Search Sales
-                            </button>
-
-                        </div>
-
-                    </div>
-
-
-                    {/* =========================================
-                        SELL
-                    ========================================= */}
-
-                    <div className="home-feature-card">
-
-                        <div className="home-feature-content">
-
-                            <p className="home-feature-eyebrow">
-                                SELL
-                            </p>
-
-                            <h2>
-                                Sell your home successfully
-                            </h2>
-
-                            <p>
-                                Ready to put your property on the
-                                market? Create an account and list
-                                your home on HomeFeed.
-                            </p>
-
-                            <Link
-                                to="/register"
-                                className="home-feature-link"
-                            >
-                                List Your Home
-                            </Link>
-
-                        </div>
-
-                    </div>
 
                 </div>
 
@@ -1084,8 +931,7 @@ function Home() {
                         <h2>
                             {filteredListings.length}{" "}
                             {
-                                filteredListings.length ===
-                                1
+                                filteredListings.length === 1
                                     ? "Listing"
                                     : "Listings"
                             }
@@ -1135,6 +981,133 @@ function Home() {
                 </section>
 
             )}
+
+
+            {/* =========================================
+                FSBO
+            ========================================= */}
+
+            <FSBO />
+
+
+            {/* =========================================
+                HOMEFEED FEATURES
+            ========================================= */}
+
+            <section className="home-features">
+
+                <div className="home-features-grid">
+
+                    {/* RENT */}
+
+                    <div className="home-feature-card">
+
+                        <div className="home-feature-content">
+
+                            <p className="home-feature-eyebrow">
+                                RENT
+                            </p>
+
+                            <h2>
+                                Rent a NYC apartment
+                            </h2>
+
+                            <p>
+                                Explore apartments across New York
+                                City and narrow your search by
+                                location, price, and the features
+                                that matter most to you.
+                            </p>
+
+                            <button
+                                type="button"
+                                className="home-feature-link"
+                                onClick={() =>
+                                    handleQuickSearch(
+                                        "For Rent"
+                                    )
+                                }
+                            >
+                                Search Rentals
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    {/* BUY */}
+
+                    <div className="home-feature-card">
+
+                        <div className="home-feature-content">
+
+                            <p className="home-feature-eyebrow">
+                                BUY
+                            </p>
+
+                            <h2>
+                                Buy with confidence
+                            </h2>
+
+                            <p>
+                                Find your next home and explore
+                                properties across NYC. Search by
+                                neighborhood, price, and property
+                                type to find the right fit.
+                            </p>
+
+                            <button
+                                type="button"
+                                className="home-feature-link"
+                                onClick={() =>
+                                    handleQuickSearch(
+                                        "For Sale"
+                                    )
+                                }
+                            >
+                                Search Sales
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    {/* SELL */}
+
+                    <div className="home-feature-card">
+
+                        <div className="home-feature-content">
+
+                            <p className="home-feature-eyebrow">
+                                SELL
+                            </p>
+
+                            <h2>
+                                Sell your home successfully
+                            </h2>
+
+                            <p>
+                                Ready to put your property on the
+                                market? Create an account and list
+                                your home on HomeFeed.
+                            </p>
+
+                            <Link
+                                to="/register"
+                                className="home-feature-link"
+                            >
+                                List Your Home
+                            </Link>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
 
         </main>
 

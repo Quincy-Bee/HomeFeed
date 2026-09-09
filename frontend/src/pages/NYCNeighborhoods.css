@@ -1,0 +1,310 @@
+/* =========================================
+   NYC NEIGHBORHOODS
+========================================= */
+
+.nyc-neighborhoods {
+    min-height: 100vh;
+    background: #fff;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.nyc-neighborhoods-header {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 100px 24px 70px;
+    text-align: center;
+}
+
+.nyc-neighborhoods-eyebrow {
+    margin: 0 0 18px;
+
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+
+    color: #888;
+}
+
+.nyc-neighborhoods-header h1 {
+    margin: 0 0 22px;
+
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 52px;
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -2px;
+
+    color: #111;
+}
+
+.nyc-neighborhoods-intro {
+    max-width: 620px;
+    margin: 0 auto;
+
+    font-size: 15px;
+    line-height: 1.6;
+
+    color: #666;
+}
+
+
+/* =========================================
+   BOROUGH GRID
+========================================= */
+
+.borough-grid {
+    width: 100%;
+    max-width: 1200px;
+
+    margin: 0 auto;
+    padding: 0 24px 100px;
+
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================
+   BOROUGH CARD
+========================================= */
+
+.borough-card {
+    position: relative;
+
+    min-height: 430px;
+
+    display: flex;
+    align-items: flex-end;
+
+    overflow: hidden;
+
+    text-decoration: none;
+
+    background: #111;
+}
+
+.borough-card-staten-island {
+    grid-column: 1 / -1;
+    min-height: 380px;
+}
+
+.borough-card img {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    transition: transform 0.5s ease;
+}
+
+.borough-card:hover img {
+    transform: scale(1.04);
+}
+
+
+/* =========================================
+   CARD OVERLAY
+========================================= */
+
+.borough-card-overlay {
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            to top,
+            rgba(0, 0, 0, 0.78) 0%,
+            rgba(0, 0, 0, 0.35) 50%,
+            rgba(0, 0, 0, 0.05) 100%
+        );
+}
+
+
+/* =========================================
+   CARD CONTENT
+========================================= */
+
+.borough-card-content {
+    position: relative;
+    z-index: 2;
+
+    width: 100%;
+
+    padding: 32px;
+
+    box-sizing: border-box;
+}
+
+.borough-card-eyebrow {
+    margin: 0 0 9px;
+
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.borough-card h2 {
+    margin: 0 0 12px;
+
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 34px;
+    font-weight: 400;
+    line-height: 1;
+
+    letter-spacing: -1px;
+
+    color: #fff;
+}
+
+.borough-card-description {
+    max-width: 520px;
+
+    margin: 0 0 12px;
+
+    font-size: 13px;
+    line-height: 1.5;
+
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.borough-card-neighborhoods {
+    max-width: 600px;
+
+    margin: 0 0 22px;
+
+    font-size: 11px;
+    line-height: 1.5;
+
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.borough-card-link {
+    display: inline-block;
+
+    padding-bottom: 5px;
+
+    border-bottom: 1px solid #fff;
+
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+
+    color: #fff;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 800px) {
+
+    .nyc-neighborhoods-header {
+        padding: 80px 20px 55px;
+    }
+
+    .nyc-neighborhoods-header h1 {
+        font-size: 44px;
+    }
+
+    .borough-grid {
+        padding: 0 20px 80px;
+    }
+
+    .borough-card {
+        min-height: 380px;
+    }
+
+    .borough-card-staten-island {
+        min-height: 350px;
+    }
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .nyc-neighborhoods-header {
+        padding: 60px 16px 45px;
+    }
+
+    .nyc-neighborhoods-eyebrow {
+        margin-bottom: 14px;
+        font-size: 10px;
+    }
+
+    .nyc-neighborhoods-header h1 {
+        margin-bottom: 18px;
+
+        font-size: 36px;
+        letter-spacing: -1.2px;
+    }
+
+    .nyc-neighborhoods-intro {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+
+    /* =========================================
+       BOROUGH GRID
+    ========================================= */
+
+    .borough-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+
+        padding: 0 12px 60px;
+    }
+
+    .borough-card,
+    .borough-card-staten-island {
+        grid-column: auto;
+
+        min-height: 360px;
+    }
+
+
+    /* =========================================
+       CARD CONTENT
+    ========================================= */
+
+    .borough-card-content {
+        padding: 24px;
+    }
+
+    .borough-card h2 {
+        font-size: 29px;
+    }
+
+    .borough-card-description {
+        font-size: 12px;
+    }
+
+    .borough-card-neighborhoods {
+        font-size: 10px;
+        margin-bottom: 18px;
+    }
+
+    .borough-card-link {
+        font-size: 11px;
+    }
+}
