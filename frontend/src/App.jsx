@@ -1,4 +1,3 @@
-
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import ListingDetails from "./pages/ListingDetails";
@@ -12,14 +11,12 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Footer from "./components/Footer";
 import NYCNeighborhoods from "./pages/NYCNeighborhoods";
 
-import "./App.css";
+import "./App.css"; 
 
 function App() {
     return (
         <>
-            <div style={{ padding: "20px", background: "white" }}>
-                TEST
-            </div>
+            <Navbar />
 
             <Routes>
 
@@ -83,4 +80,3 @@ function App() {
 }
 
 export default App;
-
