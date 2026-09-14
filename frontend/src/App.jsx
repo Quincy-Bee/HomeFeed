@@ -1,3 +1,4 @@
+
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import ListingDetails from "./pages/ListingDetails";
@@ -16,7 +17,9 @@ import "./App.css";
 function App() {
     return (
         <>
-            <Navbar />
+            <div style={{ padding: "20px", background: "white" }}>
+                TEST
+            </div>
 
             <Routes>
 
@@ -73,10 +76,11 @@ function App() {
                 />
 
             </Routes>
-           
+
             <Footer />
         </>
     );
 }
 
 export default App;
+
