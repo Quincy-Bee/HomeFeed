@@ -15,86 +15,68 @@ import "./App.css";
 
 function App() {
     return (
-        <div style={{
-            display: "block",
-            width: "100%",
-            minHeight: "100vh",
-            padding: "50px",
-            background: "white",
-            color: "black",
-            fontSize: "40px"
-        }}>
-            HOMEFEED TEST
-        </div>
+        <>
+            <Navbar />
+
+            <Routes>
+
+                <Route
+                    path="/"
+                    element={<Home />}
+                />
+
+                <Route
+                    path="/nyc-neighborhoods"
+                    element={<NYCNeighborhoods />}
+                />
+
+                <Route
+                    path="/listings/:id"
+                    element={<ListingDetails />}
+                />
+
+                <Route
+                    path="/dashboard"
+                    element={
+                        <ProtectedRoute>
+                            <Dashboard />
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/dashboard/edit/:id"
+                    element={
+                        <ProtectedRoute>
+                            <EditListing />
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/dashboard/create"
+                    element={
+                        <ProtectedRoute>
+                            <CreateListing />
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/register"
+                    element={<Register />}
+                />
+
+                <Route
+                    path="/login"
+                    element={<Login />}
+                />
+
+            </Routes>
+
+            <Footer />
+        </>
     );
 }
 
 export default App;
-
-// function App() {
-//     return (
-//         <>
-//             <Navbar />
-
-//             <Routes>
-
-//                 <Route
-//                     path="/"
-//                     element={<Home />}
-//                 />
-
-//                 <Route
-//                     path="/nyc-neighborhoods"
-//                     element={<NYCNeighborhoods />}
-//                 />
-
-//                 <Route
-//                     path="/listings/:id"
-//                     element={<ListingDetails />}
-//                 />
-
-//                 <Route
-//                     path="/dashboard"
-//                     element={
-//                         <ProtectedRoute>
-//                             <Dashboard />
-//                         </ProtectedRoute>
-//                     }
-//                 />
-
-//                 <Route
-//                     path="/dashboard/edit/:id"
-//                     element={
-//                         <ProtectedRoute>
-//                             <EditListing />
-//                         </ProtectedRoute>
-//                     }
-//                 />
-
-//                 <Route
-//                     path="/dashboard/create"
-//                     element={
-//                         <ProtectedRoute>
-//                             <CreateListing />
-//                         </ProtectedRoute>
-//                     }
-//                 />
-
-//                 <Route
-//                     path="/register"
-//                     element={<Register />}
-//                 />
-
-//                 <Route
-//                     path="/login"
-//                     element={<Login />}
-//                 />
-
-//             </Routes>
-
-//             <Footer />
-//         </>
-//     );
-// }
-
-// export default App;
