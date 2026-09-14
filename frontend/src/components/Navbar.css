@@ -38,12 +38,18 @@
   .navbar {
     flex-wrap: wrap;
     justify-content: center;
-    gap: 15px;
-    padding: 15px 20px;
+    gap: 12px;
+    padding: 15px 10px;
   }
 
-  .navbar .greeting {
+  .welcome-message {
     width: 100%;
     text-align: center;
+    order: -1;
+  }
+
+  .navbar a,
+  .logout-button {
+    font-size: 14px;
   }
 }
