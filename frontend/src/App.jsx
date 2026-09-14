@@ -11,6 +11,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Footer from "./components/Footer";
 import NYCNeighborhoods from "./pages/NYCNeighborhoods";
 import "./App.css";
+import FSBO from "./components/FSBO";
 
 function App() {
     return (
@@ -72,7 +73,7 @@ function App() {
                 />
 
             </Routes>
-           
+           <FSBO />
             <Footer />
         </>
     );
