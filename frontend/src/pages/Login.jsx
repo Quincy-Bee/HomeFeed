@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Auth.css";
@@ -12,6 +11,9 @@ function Login() {
         password: ""
     });
 
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+
     const handleChange = (event) => {
         setUser({
             ...user,
@@ -19,47 +21,74 @@ function Login() {
         });
     };
 
-    // Login user
+    const loginUser = async (event) => {
 
-    const loginUser = (event) => {
         event.preventDefault();
 
-        fetch("/api/auth/login", {
-            method: "POST",
+        setError("");
+        setLoading(true);
 
-            headers: {
-                "Content-Type": "application/json"
-            },
+        try {
 
-            body: JSON.stringify(user)
-        })
-            .then((response) => response.json())
-            .then((data) => {
+            const response = await fetch(
+                "/api/auth/login",
+                {
+                    method: "POST",
 
-                console.log("Login response:", data);
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
 
-                if (!data.token) {
-                    console.error("No authentication token received.");
-                    return;
+                    body: JSON.stringify(user)
                 }
+            );
 
-                // Save JWT token
-                localStorage.setItem(
-                    "token",
-                    data.token
+            const data = await response.json();
+
+            console.log("Login response:", data);
+
+            if (!response.ok) {
+                throw new Error(
+                    data.message ||
+                    "Login failed."
                 );
+            }
 
-                // Save user information
-                localStorage.setItem(
-                    "user",
-                    JSON.stringify(data.user)
+            if (!data.token) {
+                throw new Error(
+                    "No authentication token received."
                 );
+            }
 
-                navigate("/dashboard");
-            })
-            .catch((error) => {
-                console.log("Login error:", error);
-            });
+            localStorage.setItem(
+                "token",
+                data.token
+            );
+
+            localStorage.setItem(
+                "user",
+                JSON.stringify(data.user)
+            );
+
+            navigate("/dashboard");
+
+        } catch (error) {
+
+            console.error(
+                "Login error:",
+                error
+            );
+
+            setError(
+                error.message ||
+                "Unable to log in."
+            );
+
+        } finally {
+
+            setLoading(false);
+
+        }
     };
 
     return (
@@ -67,13 +96,21 @@ function Login() {
 
             <h1>Agent Sign In</h1>
 
+            {error && (
+                <p className="auth-error">
+                    {error}
+                </p>
+            )}
+
             <form onSubmit={loginUser}>
 
                 <input
                     name="email"
+                    type="email"
                     placeholder="Email"
                     value={user.email}
                     onChange={handleChange}
+                    required
                 />
 
                 <input
@@ -82,10 +119,14 @@ function Login() {
                     placeholder="Password"
                     value={user.password}
                     onChange={handleChange}
+                    required
                 />
 
-                <button type="submit">
-                    Login
+                <button
+                    type="submit"
+                    disabled={loading}
+                >
+                    {loading ? "Logging in..." : "Login"}
                 </button>
 
             </form>
