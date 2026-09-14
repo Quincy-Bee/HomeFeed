@@ -10,14 +10,17 @@ import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Footer from "./components/Footer";
 import NYCNeighborhoods from "./pages/NYCNeighborhoods";
-
+import FSBO from "./components/FSBO";
 import "./App.css"; 
 
 function App() {
     return (
         <>
-            <Routes>
 
+        <Navbar />
+
+            <Routes>
+               
                 <Route
                     path="/"
                     element={<Home />}
@@ -71,6 +74,7 @@ function App() {
                 />
 
             </Routes>
+            <FSBO />
 
             <Footer />
         </>
