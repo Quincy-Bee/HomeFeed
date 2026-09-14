@@ -1,6 +1,6 @@
 
 .footer {
-    margin-top: 80px;
+    margin-top: 1px;
     padding: 60px 40px 25px;
     border-top: 1px solid #e5e5e5;
     background: #f5f5f3;
@@ -104,7 +104,7 @@
 
     .footer {
         padding: 45px 20px 20px;
-    }
+            }
 
     .footer-container {
         flex-direction: column;
