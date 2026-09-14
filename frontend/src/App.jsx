@@ -72,7 +72,7 @@ function App() {
                 />
 
             </Routes>
-            <FSBO />
+           
             <Footer />
         </>
     );
