@@ -9,7 +9,6 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Footer from "./components/Footer";
-import SocialMedia from "./components/SocialMedia";
 import NYCNeighborhoods from "./pages/NYCNeighborhoods";
 
 import "./App.css";
@@ -74,7 +73,7 @@ function App() {
                 />
 
             </Routes>
-
+           
             <Footer />
         </>
     );
