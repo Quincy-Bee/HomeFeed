@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import "./Footer.css";
@@ -9,9 +8,17 @@ function Footer() {
     const [user] = useState(() => {
         const savedUser = localStorage.getItem("user");
 
-        return savedUser
-            ? JSON.parse(savedUser)
-            : null;
+        if (!savedUser || savedUser === "undefined") {
+            return null;
+        }
+
+        try {
+            return JSON.parse(savedUser);
+        } catch (error) {
+            console.error("Invalid user data:", error);
+            localStorage.removeItem("user");
+            return null;
+        }
     });
 
     return (
@@ -21,8 +28,6 @@ function Footer() {
             <div className="footer-container">
 
                 <div className="footer-brand">
-
-                    
 
                     <Link
                         to="/"
@@ -35,11 +40,9 @@ function Footer() {
                         Discover your next place in New York.
                     </p>
 
-                    
-
                 </div>
 
-    <SocialMedia />
+                <SocialMedia />
 
                 <div className="footer-links">
 
@@ -65,7 +68,6 @@ function Footer() {
 
                     </div>
 
-
                     <div className="footer-column">
 
                         <h3>HomeFeed</h3>
@@ -90,7 +92,6 @@ function Footer() {
 
             </div>
 
-
             <div className="footer-bottom">
 
                 <p>
@@ -98,7 +99,6 @@ function Footer() {
                 </p>
 
                 <div>
-
 
                     <a href="#">
                         Privacy
@@ -109,13 +109,12 @@ function Footer() {
                     </a>
 
                 </div>
-               
-            </div >
-        
+
+            </div>
+
         </footer>
 
     );
-
 }
 
 export default Footer;
