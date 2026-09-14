@@ -16,8 +16,6 @@ import "./App.css";
 function App() {
     return (
         <>
-            <Navbar />
-
             <Routes>
 
                 <Route
