@@ -8,9 +8,17 @@ function Navbar() {
     const [user, setUser] = useState(() => {
         const savedUser = localStorage.getItem("user");
 
-        return savedUser
-            ? JSON.parse(savedUser)
-            : null;
+        if (!savedUser || savedUser === "undefined") {
+            return null;
+        }
+
+        try {
+            return JSON.parse(savedUser);
+        } catch (error) {
+            console.error("Invalid user data:", error);
+            localStorage.removeItem("user");
+            return null;
+        }
     });
 
     const logout = () => {
