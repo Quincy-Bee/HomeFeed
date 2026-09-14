@@ -74,9 +74,9 @@ function App() {
                 />
 
             </Routes>
-            <FSBO />
+            {/* <FSBO />
 
-            <Footer />
+            <Footer /> */}
         </>
     );
 }
