@@ -4,6 +4,7 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import NYCNeighborhoods from "./pages/NYCNeighborhoods";
 
 import "./App.css";
 
@@ -26,6 +27,11 @@ function App() {
                 <Route
                     path="/register"
                     element={<Register />}
+                />
+
+                <Route
+                    path="/nyc-neighborhoods"
+                    element={<NYCNeighborhoods />}
                 />
             </Routes>
 
