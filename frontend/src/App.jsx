@@ -15,6 +15,7 @@ import FSBO from "./components/FSBO";
 import Manhattan from "./pages/Manhattan";
 import Brooklyn from "./pages/Brooklyn.jsx";
 import Queens from "./pages/Queens.jsx";
+import TheBronx from "./pages/TheBronx.jsx";
 
 function App() {
     return (
@@ -87,8 +88,13 @@ function App() {
                 />
 
                  <Route
-                    path="/nyc-neighborhoods/Queens"
+                    path="/nyc-neighborhoods/queens"
                     element={<Queens />}
+                />
+
+                 <Route
+                    path="/nyc-neighborhoods/thebronx"
+                    element={<TheBronx />}
                 />
 
 

@@ -34,7 +34,7 @@ const boroughs = [
   },
   {
     name: "The Bronx",
-    slug: "bronx",
+    slug: "TheBronx",
     description:
       "Rich in history, culture, parks, and neighborhood communities across the northernmost borough.",
     neighborhoods:
