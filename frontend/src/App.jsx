@@ -16,6 +16,7 @@ import Manhattan from "./pages/Manhattan";
 import Brooklyn from "./pages/Brooklyn.jsx";
 import Queens from "./pages/Queens.jsx";
 import TheBronx from "./pages/TheBronx.jsx";
+import StatenIsland from "./pages/StatenIsland.jsx";
 
 function App() {
     return (
@@ -95,6 +96,11 @@ function App() {
                  <Route
                     path="/nyc-neighborhoods/thebronx"
                     element={<TheBronx />}
+                />
+
+                <Route
+                    path="/nyc-neighborhoods/staten-island"
+                    element={<StatenIsland />}
                 />
 
 
