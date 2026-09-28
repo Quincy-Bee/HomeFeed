@@ -12,6 +12,9 @@ import Footer from "./components/Footer";
 import NYCNeighborhoods from "./pages/NYCNeighborhoods";
 import "./App.css";
 import FSBO from "./components/FSBO";
+import Manhattan from "./pages/Manhattan";
+import Brooklyn from "./pages/Brooklyn.jsx";
+import Queens from "./pages/Queens.jsx";
 
 function App() {
     return (
@@ -66,14 +69,31 @@ function App() {
                     path="/register"
                     element={<Register />}
                 />
+                
 
                 <Route
                     path="/login"
                     element={<Login />}
                 />
 
+                <Route
+                    path="/nyc-neighborhoods/manhattan"
+                    element={<Manhattan />}
+                />
+
+                <Route
+                    path="/nyc-neighborhoods/brooklyn"
+                    element={<Brooklyn />}
+                />
+
+                 <Route
+                    path="/nyc-neighborhoods/Queens"
+                    element={<Queens />}
+                />
+
+
             </Routes>
-           <FSBO />
+            <FSBO />
             <Footer />
         </>
     );

@@ -1,0 +1,150 @@
+.manhattan-page {
+    width: 100%;
+    background: #ffffff;
+    color: #111111;
+}
+
+.neighborhood-info {
+    width: 100%;
+}
+
+/* Header */
+.neighborhood-header {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 90px 40px 60px;
+}
+
+.neighborhood-eyebrow {
+    margin: 0 0 15px;
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #000000;
+}
+
+.neighborhood-header h1 {
+    margin: 0 0 25px;
+    font-size: 64px;
+    font-weight: 300;
+    letter-spacing: -2px;
+}
+
+.neighborhood-intro {
+    max-width: 720px;
+    margin: 0;
+    font-size: 21px;
+    line-height: 1.6;
+    font-weight: 300;
+    color: #555;
+}
+
+/* Hero Image */
+.neighborhood-image {
+    width: 100%;
+    height: 550px;
+    overflow: hidden;
+}
+
+.neighborhood-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Main Content */
+.neighborhood-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 80px 40px 100px;
+}
+
+.neighborhood-content section {
+    margin-bottom: 70px;
+}
+
+.neighborhood-content section:last-child {
+    margin-bottom: 0;
+}
+
+.neighborhood-content h2 {
+    margin: 0 0 20px;
+    font-size: 30px;
+    font-weight: 400;
+    letter-spacing: -0.5px;
+}
+
+.neighborhood-content p {
+    margin: 0 0 20px;
+    font-size: 17px;
+    line-height: 1.8;
+    font-weight: 300;
+    color: #555;
+}
+
+.neighborhood-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+    .neighborhood-header {
+        padding: 70px 25px 45px;
+    }
+
+    .neighborhood-header h1 {
+        font-size: 48px;
+    }
+
+    .neighborhood-intro {
+        font-size: 18px;
+    }
+
+    .neighborhood-image {
+        height: 400px;
+    }
+
+    .neighborhood-content {
+        padding: 60px 25px 80px;
+    }
+
+    .neighborhood-content section {
+        margin-bottom: 55px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .neighborhood-header {
+        padding: 55px 20px 35px;
+    }
+
+    .neighborhood-header h1 {
+        font-size: 40px;
+        letter-spacing: -1px;
+    }
+
+    .neighborhood-intro {
+        font-size: 17px;
+        line-height: 1.5;
+    }
+
+    .neighborhood-image {
+        height: 300px;
+    }
+
+    .neighborhood-content {
+        padding: 50px 20px 70px;
+    }
+
+    .neighborhood-content h2 {
+        font-size: 26px;
+    }
+
+    .neighborhood-content p {
+        font-size: 16px;
+        line-height: 1.7;
+    }
+}

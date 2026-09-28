@@ -64,8 +64,6 @@
   object-fit: cover;
 }
 
-
-
 .dashboard-card-content h3 {
   font-size: 25px;
   font-family: Helvetica, sans-serif;
@@ -78,10 +76,7 @@
   font-family: Helvetica, sans-serif;
   font-weight: 100;
   margin: 10px;
-
 }
-
-
 
 .dashboard-price {
   color: rgb(16, 102, 53);
@@ -93,13 +88,11 @@
 }
 
 
-
 .dashboard-actions {
   display: flex;
   gap: 12px;
   margin: 20px;
 }
-
 
 
 .edit-button,
@@ -119,19 +112,16 @@
 }
 
 
-
 .delete-button {
   background: #eeeeee;
   color: black;
 }
 
 
-
 .edit-button:hover,
 .delete-button:hover {
   opacity: .75;
 }
-
 
 
 @media (max-width: 900px) {
@@ -141,7 +131,6 @@
   }
 
 }
-
 
 
 @media (max-width: 600px) {
