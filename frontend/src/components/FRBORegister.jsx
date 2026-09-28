@@ -56,14 +56,24 @@ function FRBORegister() {
 
             });
 
-            const data = await response.json();
+            const text = await response.text();
 
-            console.log("Registered:", data);
+            console.log("Server response:", text);
+
+            let data = {};
+
+            try {
+                data = text ? JSON.parse(text) : {};
+            } catch (error) {
+                console.log("Invalid JSON response:", text);
+            }
 
             if (!response.ok) {
                 setError(data.message || "Registration failed.");
                 return;
             }
+
+            console.log("Registered:", data);
 
             navigate("/login");
 
@@ -83,7 +93,9 @@ function FRBORegister() {
 
             <h1>Rent Your Property</h1>
 
-            <p>Create your HomeFeed account to list your property for rent.</p>
+            <p>
+                Create your HomeFeed account to list your property for rent.
+            </p>
 
             <form onSubmit={registerUser}>
 

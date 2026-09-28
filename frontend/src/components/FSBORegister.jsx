@@ -56,14 +56,24 @@ function FSBORegister() {
 
             });
 
-            const data = await response.json();
+            const text = await response.text();
 
-            console.log("Registered:", data);
+            console.log("Server response:", text);
+
+            let data = {};
+
+            try {
+                data = text ? JSON.parse(text) : {};
+            } catch (error) {
+                console.log("Invalid JSON response:", text);
+            }
 
             if (!response.ok) {
                 setError(data.message || "Registration failed.");
                 return;
             }
+
+            console.log("Registered:", data);
 
             navigate("/login");
 
@@ -83,7 +93,9 @@ function FSBORegister() {
 
             <h1>Sell Your Property</h1>
 
-            <p>Create your HomeFeed account to list your property for sale.</p>
+            <p>
+                Create your HomeFeed account to list your property for sale.
+            </p>
 
             <form onSubmit={registerUser}>
 
