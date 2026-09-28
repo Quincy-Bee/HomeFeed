@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./Navbar.css";
+import logo from "../assets/homefeed-logo.png";
 
 function Navbar() {
     const navigate = useNavigate();
@@ -33,6 +34,10 @@ function Navbar() {
     return (
         <nav className="navbar">
 
+            <Link to="/" className="navbar-logo">
+            <img src={logo} alt="HomeFeed" />
+        </Link>
+
             <Link to="/">
                 Listings
             </Link>
@@ -61,7 +66,7 @@ function Navbar() {
             ) : (
                 <>
                     <Link to="/register">
-                        Register
+                        Agent Register
                     </Link>
 
                     <Link to="/login">

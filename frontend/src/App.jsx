@@ -17,6 +17,8 @@ import Brooklyn from "./pages/Brooklyn.jsx";
 import Queens from "./pages/Queens.jsx";
 import TheBronx from "./pages/TheBronx.jsx";
 import StatenIsland from "./pages/StatenIsland.jsx";
+import FSBORegister from "./components/FSBORegister";
+import FRBORegister from "./components/FRBORegister";
 
 function App() {
     return (
@@ -71,7 +73,7 @@ function App() {
                     path="/register"
                     element={<Register />}
                 />
-                
+
 
                 <Route
                     path="/login"
@@ -88,12 +90,12 @@ function App() {
                     element={<Brooklyn />}
                 />
 
-                 <Route
+                <Route
                     path="/nyc-neighborhoods/queens"
                     element={<Queens />}
                 />
 
-                 <Route
+                <Route
                     path="/nyc-neighborhoods/thebronx"
                     element={<TheBronx />}
                 />
@@ -102,6 +104,9 @@ function App() {
                     path="/nyc-neighborhoods/staten-island"
                     element={<StatenIsland />}
                 />
+
+                <Route path="/register/fsbo" element={<FSBORegister />} />
+                <Route path="/register/frbo" element={<FRBORegister />} />
 
 
             </Routes>

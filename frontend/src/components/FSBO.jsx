@@ -8,11 +8,11 @@ function FSBO() {
         <h2>Want to rent or sell your home yourself?</h2>
 
         <div className="fsbo-links">
-          <Link to="/register" className="fsbo-link">
+          <Link to="/register/frbo" className="fsbo-link">
             For Rent by Owner
           </Link>
 
-          <Link to="/register" className="fsbo-link">
+          <Link to="/register/fsbo" className="fsbo-link">
             For Sale by Owner
           </Link>
         </div>
