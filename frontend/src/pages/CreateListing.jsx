@@ -122,9 +122,36 @@ function CreateListing() {
 
     const navigate = useNavigate();
 
+    // ==========================================
+    // USER / ACCOUNT TYPE
+    // ==========================================
+
+    const user = JSON.parse(
+        localStorage.getItem("user") || "{}"
+    );
+
+    const accountType = user.accountType || "broker";
+
+    const isFSBO = accountType === "fsbo";
+    const isFRBO = accountType === "frbo";
+    const isOwner = isFSBO || isFRBO;
+
+
+    // ==========================================
+    // DEFAULT LISTING TYPE
+    // ==========================================
+
+    const defaultListingType =
+        isFSBO
+            ? "For Sale"
+            : isFRBO
+                ? "For Rent"
+                : "For Sale";
+
+
     const [listing, setListing] = useState({
-        listingType: "For Sale",
-        propertyType: "Condo",
+        listingType: defaultListingType,
+        propertyType: isFRBO ? "Rental" : "Condo",
         address: "",
         apartmentNumber: "",
         borough: "",
@@ -140,6 +167,44 @@ function CreateListing() {
     });
 
     const [submitting, setSubmitting] = useState(false);
+
+
+    // ==========================================
+    // PAGE TITLE
+    // ==========================================
+
+    const getPageTitle = () => {
+
+        if (isFSBO) {
+            return "Create For Sale Listing";
+        }
+
+        if (isFRBO) {
+            return "Create Rental Listing";
+        }
+
+        return "Create Listing";
+
+    };
+
+
+    // ==========================================
+    // PAGE DESCRIPTION
+    // ==========================================
+
+    const getPageDescription = () => {
+
+        if (isFSBO) {
+            return "Add your property details to list your home for sale.";
+        }
+
+        if (isFRBO) {
+            return "Add your property details to list your home for rent.";
+        }
+
+        return "Add the property details below.";
+
+    };
 
 
     // ==========================================
@@ -165,6 +230,7 @@ function CreateListing() {
             ...currentListing,
             [name]: value
         }));
+
     };
 
 
@@ -188,6 +254,7 @@ function CreateListing() {
             };
 
         });
+
     };
 
 
@@ -267,6 +334,7 @@ function CreateListing() {
                     (image) =>
                         image.trim() !== ""
                 );
+
 
             const listingData = {
                 ...listing,
@@ -358,11 +426,11 @@ function CreateListing() {
             <div className="create-listing-header">
 
                 <h1>
-                    Create Listing
+                    {getPageTitle()}
                 </h1>
 
                 <p>
-                    Add the property details below.
+                    {getPageDescription()}
                 </p>
 
             </div>
@@ -392,27 +460,42 @@ function CreateListing() {
                                 Listing Type
                             </label>
 
-                            <select
-                                id="listingType"
-                                name="listingType"
-                                value={
-                                    listing.listingType
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                required
-                            >
+                            {isOwner ? (
 
-                                <option value="For Sale">
-                                    For Sale
-                                </option>
+                                <input
+                                    id="listingType"
+                                    type="text"
+                                    value={
+                                        listing.listingType
+                                    }
+                                    readOnly
+                                />
 
-                                <option value="For Rent">
-                                    For Rent
-                                </option>
+                            ) : (
 
-                            </select>
+                                <select
+                                    id="listingType"
+                                    name="listingType"
+                                    value={
+                                        listing.listingType
+                                    }
+                                    onChange={
+                                        handleChange
+                                    }
+                                    required
+                                >
+
+                                    <option value="For Sale">
+                                        For Sale
+                                    </option>
+
+                                    <option value="For Rent">
+                                        For Rent
+                                    </option>
+
+                                </select>
+
+                            )}
 
                         </div>
 
@@ -728,7 +811,9 @@ function CreateListing() {
                         <div className="form-group">
 
                             <label htmlFor="price">
-                                Price
+                                {isFRBO
+                                    ? "Monthly Rent"
+                                    : "Price"}
                             </label>
 
                             <input
@@ -853,10 +938,7 @@ function CreateListing() {
                                             }
                                             placeholder="https://..."
                                             required={
-                                                index ===
-                                                    0
-                                                    ? true
-                                                    : false
+                                                index === 0
                                             }
                                         />
 
@@ -965,7 +1047,11 @@ function CreateListing() {
                     >
                         {submitting
                             ? "Publishing..."
-                            : "Publish Listing"}
+                            : isFSBO
+                                ? "Publish For Sale Listing"
+                                : isFRBO
+                                    ? "Publish Rental Listing"
+                                    : "Publish Listing"}
                     </button>
 
                 </div>

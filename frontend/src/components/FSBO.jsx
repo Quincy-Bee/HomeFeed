@@ -2,23 +2,38 @@ import { Link } from "react-router-dom";
 import "./FSBO.css";
 
 function FSBO() {
-  return (
-    <section className="fsbo">
-      <div className="fsbo-content">
-        <h2>Want to rent or sell your home yourself?</h2>
 
-        <div className="fsbo-links">
-          <Link to="/register/frbo" className="fsbo-link">
-            For Rent by Owner
-          </Link>
+    const isLoggedIn = !!localStorage.getItem("token");
 
-          <Link to="/register/fsbo" className="fsbo-link">
-            For Sale by Owner
-          </Link>
-        </div>
-      </div>
-    </section>
-  );
+    return (
+        <section className="fsbo">
+
+            <div className="fsbo-content">
+
+                <h2>Want to rent or sell your home yourself?</h2>
+
+                <div className="fsbo-links">
+
+                    <Link
+                        to={isLoggedIn ? "/dashboard" : "/for-rent-by-owner"}
+                        className="fsbo-link"
+                    >
+                        For Rent by Owner
+                    </Link>
+
+                    <Link
+                        to={isLoggedIn ? "/dashboard" : "/for-sale-by-owner"}
+                        className="fsbo-link"
+                    >
+                        For Sale by Owner
+                    </Link>
+
+                </div>
+
+            </div>
+
+        </section>
+    );
 }
 
 export default FSBO;

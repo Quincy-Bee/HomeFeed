@@ -14,6 +14,10 @@ function Dashboard() {
 
     const token = localStorage.getItem("token");
 
+    const isFSBO = user.accountType === "fsbo";
+    const isFRBO = user.accountType === "frbo";
+    const isOwner = isFSBO || isFRBO;
+
     useEffect(() => {
 
         const fetchListings = async () => {
@@ -137,6 +141,63 @@ function Dashboard() {
 
 
     // ==========================================
+    // DASHBOARD TITLE
+    // ==========================================
+
+    const getDashboardTitle = () => {
+
+        if (isFSBO) {
+            return "For Sale by Owner";
+        }
+
+        if (isFRBO) {
+            return "For Rent by Owner";
+        }
+
+        return "Dashboard";
+
+    };
+
+
+    // ==========================================
+    // CREATE BUTTON TEXT
+    // ==========================================
+
+    const getCreateButtonText = () => {
+
+        if (isFSBO) {
+            return "Create For Sale Listing";
+        }
+
+        if (isFRBO) {
+            return "Create Rental Listing";
+        }
+
+        return "Create Listing";
+
+    };
+
+
+    // ==========================================
+    // EMPTY STATE TEXT
+    // ==========================================
+
+    const getEmptyHeading = () => {
+
+        if (isFSBO) {
+            return "You don't have any properties for sale yet.";
+        }
+
+        if (isFRBO) {
+            return "You don't have any rental properties yet.";
+        }
+
+        return "No listings yet.";
+
+    };
+
+
+    // ==========================================
     // LOADING
     // ==========================================
 
@@ -183,8 +244,14 @@ function Dashboard() {
                 <div>
 
                     <h1>
-                        Dashboard
+                        {getDashboardTitle()}
                     </h1>
+
+                    {isOwner && (
+                        <p>
+                            Welcome, {user.name}
+                        </p>
+                    )}
 
                     {user.role === "admin" && (
                         <p>
@@ -198,7 +265,7 @@ function Dashboard() {
                     to="/dashboard/create"
                     className="create-button"
                 >
-                    Create Listing
+                    {getCreateButtonText()}
                 </Link>
 
             </div>
@@ -213,14 +280,14 @@ function Dashboard() {
                 <div className="empty-dashboard">
 
                     <h2>
-                        No listings yet.
+                        {getEmptyHeading()}
                     </h2>
 
                     <Link
                         to="/dashboard/create"
                         className="create-button"
                     >
-                        Create Your First Listing
+                        {getCreateButtonText()}
                     </Link>
 
                 </div>
