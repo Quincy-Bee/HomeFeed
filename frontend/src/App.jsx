@@ -19,6 +19,7 @@ import TheBronx from "./pages/TheBronx.jsx";
 import StatenIsland from "./pages/StatenIsland.jsx";
 import FSBORegister from "./components/FSBORegister";
 import FRBORegister from "./components/FRBORegister";
+import OwnerAuth from "./pages/OwnerAuth";
 
 function App() {
     return (
@@ -107,6 +108,8 @@ function App() {
 
                 <Route path="/register/fsbo" element={<FSBORegister />} />
                 <Route path="/register/frbo" element={<FRBORegister />} />
+
+                <Route path="/owner-auth" element={<OwnerAuth />} />
 
 
             </Routes>

@@ -94,7 +94,7 @@ function Login() {
     return (
         <div className="auth-container">
 
-            <h1>Agent Sign In</h1>
+            <h1>Sign In</h1>
 
             {error && (
                 <p className="auth-error">

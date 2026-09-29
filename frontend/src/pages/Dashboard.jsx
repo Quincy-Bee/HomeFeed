@@ -14,10 +14,6 @@ function Dashboard() {
 
     const token = localStorage.getItem("token");
 
-    const isFSBO = user.accountType === "fsbo";
-    const isFRBO = user.accountType === "frbo";
-    const isOwner = isFSBO || isFRBO;
-
     useEffect(() => {
 
         const fetchListings = async () => {
@@ -65,10 +61,7 @@ function Dashboard() {
     }, [token]);
 
 
-    // ==========================================
     // DELETE LISTING
-    // ==========================================
-
     const deleteListing = async (id) => {
 
         const confirmed = window.confirm(
@@ -115,15 +108,11 @@ function Dashboard() {
             );
 
             alert(error.message);
-
         }
     };
 
 
-    // ==========================================
     // LISTING HEADING
-    // ==========================================
-
     const getListingHeading = (listing) => {
 
         const type =
@@ -136,120 +125,48 @@ function Dashboard() {
         }
 
         return listing.title || "Listing";
-
     };
 
 
-    // ==========================================
-    // DASHBOARD TITLE
-    // ==========================================
-
-    const getDashboardTitle = () => {
-
-        if (isFSBO) {
-            return "For Sale by Owner";
-        }
-
-        if (isFRBO) {
-            return "For Rent by Owner";
-        }
-
-        return "Dashboard";
-
-    };
-
-
-    // ==========================================
-    // CREATE BUTTON TEXT
-    // ==========================================
-
-    const getCreateButtonText = () => {
-
-        if (isFSBO) {
-            return "Create For Sale Listing";
-        }
-
-        if (isFRBO) {
-            return "Create Rental Listing";
-        }
-
-        return "Create Listing";
-
-    };
-
-
-    // ==========================================
-    // EMPTY STATE TEXT
-    // ==========================================
-
-    const getEmptyHeading = () => {
-
-        if (isFSBO) {
-            return "You don't have any properties for sale yet.";
-        }
-
-        if (isFRBO) {
-            return "You don't have any rental properties yet.";
-        }
-
-        return "No listings yet.";
-
-    };
-
-
-    // ==========================================
     // LOADING
-    // ==========================================
-
     if (loading) {
-
         return (
             <div className="dashboard">
                 <h2>Loading listings...</h2>
             </div>
         );
-
     }
 
 
-    // ==========================================
     // ERROR
-    // ==========================================
-
     if (error) {
-
         return (
             <div className="dashboard">
                 <h2>{error}</h2>
             </div>
         );
-
     }
 
 
-    // ==========================================
-    // DASHBOARD
-    // ==========================================
-
     return (
-
         <div className="dashboard">
-
-            {/* ==========================================
-                HEADER
-            ========================================== */}
 
             <div className="dashboard-header">
 
                 <div>
-
                     <h1>
-                        {getDashboardTitle()}
+                        Dashboard
                     </h1>
 
-                    {isOwner && (
+                    {user.accountType === "fsbo" && (
                         <p>
-                            Welcome, {user.name}
+                            For Sale by Owner
+                        </p>
+                    )}
+
+                    {user.accountType === "frbo" && (
+                        <p>
+                            For Rent by Owner
                         </p>
                     )}
 
@@ -258,45 +175,61 @@ function Dashboard() {
                             Admin • All Listings
                         </p>
                     )}
+                </div>
+
+
+                {/* CREATE LISTING BUTTONS */}
+
+                <div className="create-buttons">
+
+                    <Link
+                        to="/dashboard/create?type=sale"
+                        className="create-button"
+                    >
+                        Create For Sale Listing
+                    </Link>
+
+                    <Link
+                        to="/dashboard/create?type=rent"
+                        className="create-button"
+                    >
+                        Create For Rent Listing
+                    </Link>
 
                 </div>
 
-                <Link
-                    to="/dashboard/create"
-                    className="create-button"
-                >
-                    {getCreateButtonText()}
-                </Link>
-
             </div>
 
-
-            {/* ==========================================
-                EMPTY STATE
-            ========================================== */}
 
             {listings.length === 0 ? (
 
                 <div className="empty-dashboard">
 
                     <h2>
-                        {getEmptyHeading()}
+                        No listings yet.
                     </h2>
 
-                    <Link
-                        to="/dashboard/create"
-                        className="create-button"
-                    >
-                        {getCreateButtonText()}
-                    </Link>
+                    <div className="create-buttons">
+
+                        <Link
+                            to="/dashboard/create?type=sale"
+                            className="create-button"
+                        >
+                            Create For Sale Listing
+                        </Link>
+
+                        <Link
+                            to="/dashboard/create?type=rent"
+                            className="create-button"
+                        >
+                            Create For Rent Listing
+                        </Link>
+
+                    </div>
 
                 </div>
 
             ) : (
-
-                /* ==========================================
-                   LISTINGS
-                ========================================== */
 
                 <div className="dashboard-listings">
 
@@ -311,10 +244,6 @@ function Dashboard() {
                                 className="dashboard-card"
                                 key={listing._id}
                             >
-
-                                {/* ==========================================
-                                    PROPERTY IMAGE
-                                ========================================== */}
 
                                 {firstImage ? (
 
@@ -333,10 +262,6 @@ function Dashboard() {
 
                                 )}
 
-
-                                {/* ==========================================
-                                    LISTING CONTENT
-                                ========================================== */}
 
                                 <div className="dashboard-card-content">
 
@@ -382,10 +307,6 @@ function Dashboard() {
                                     </p>
 
 
-                                    {/* ==========================================
-                                        ADMIN OWNER INFORMATION
-                                    ========================================== */}
-
                                     {user.role === "admin" &&
                                         listing.owner && (
 
@@ -402,10 +323,6 @@ function Dashboard() {
 
                                         )}
 
-
-                                    {/* ==========================================
-                                        ACTIONS
-                                    ========================================== */}
 
                                     <div className="dashboard-actions">
 
@@ -444,7 +361,6 @@ function Dashboard() {
             )}
 
         </div>
-
     );
 }
 

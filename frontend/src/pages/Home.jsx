@@ -1089,7 +1089,7 @@ function Home() {
                             </p>
 
                             <Link
-                                to="/register/fsbo"
+                                to="/dashboard"
                                 className="home-feature-link"
                             >
                                 List Your Home

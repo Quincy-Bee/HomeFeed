@@ -1,3 +1,10 @@
+.create-buttons {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
 .dashboard {
   padding: 40px;
   max-width: 1200px;

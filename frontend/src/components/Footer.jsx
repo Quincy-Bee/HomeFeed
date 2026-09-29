@@ -61,7 +61,7 @@ function Footer() {
                                 </Link>
 
                                 <Link to="/login">
-                                    Agent Sign In
+                                    Sign In
                                 </Link>
                             </>
                         )}

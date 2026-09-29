@@ -15,14 +15,22 @@ function FSBO() {
                 <div className="fsbo-links">
 
                     <Link
-                        to={isLoggedIn ? "/dashboard" : "/for-rent-by-owner"}
+                        to={
+                            isLoggedIn
+                                ? "/dashboard"
+                                : "/owner-auth?type=rent"
+                        }
                         className="fsbo-link"
                     >
                         For Rent by Owner
                     </Link>
 
                     <Link
-                        to={isLoggedIn ? "/dashboard" : "/for-sale-by-owner"}
+                        to={
+                            isLoggedIn
+                                ? "/dashboard"
+                                : "/owner-auth?type=sale"
+                        }
                         className="fsbo-link"
                     >
                         For Sale by Owner

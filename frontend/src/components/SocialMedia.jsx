@@ -12,7 +12,7 @@ function SocialMedia() {
             <div className="social-links">
 
                 <a
-                    href="https://www.instagram.com/"
+                    href="https://www.instagram.com/homefeed.io"
                     target="_blank"
                     rel="noreferrer"
                 >

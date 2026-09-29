@@ -1,9 +1,9 @@
 .create-listing {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 50px 30px 80px;
-  font-family: Helvetica, Arial, sans-serif;
-  color: #111;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 50px 30px 80px;
+    font-family: Helvetica, Arial, sans-serif;
+    color: #111;
 }
 
 
@@ -11,21 +11,11 @@
    HEADER
 ========================================= */
 
-.create-listing-header {
-  margin-bottom: 40px;
-}
-
-.create-listing-header h1 {
-  margin: 0 0 8px;
-  font-size: 42px;
-  font-weight: 300;
-  letter-spacing: -1px;
-}
-
-.create-listing-header p {
-  margin: 0;
-  color: #666;
-  font-size: 15px;
+.create-listing h1 {
+    margin: 0 0 35px;
+    font-size: 42px;
+    font-weight: 300;
+    letter-spacing: -1px;
 }
 
 
@@ -33,93 +23,64 @@
    FORM
 ========================================= */
 
-.create-listing-form {
-  background: #fff;
-  border: 1px solid #e5e5e5;
+.create-listing form {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    padding: 30px;
 }
 
 
 /* =========================================
-   SECTIONS
+   LABELS
 ========================================= */
 
-.form-section {
-  padding: 30px;
-  border-bottom: 1px solid #e5e5e5;
-}
+.create-listing form label {
+    display: block;
+    margin-bottom: 8px;
 
-.form-section h2 {
-  margin: 0 0 25px;
-  font-size: 20px;
-  font-weight: 400;
+    font-size: 13px;
+    font-weight: 500;
+    color: #333;
 }
 
 
 /* =========================================
-   FORM ROWS
+   INPUTS / SELECTS / TEXTAREA
 ========================================= */
 
-.form-row {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+.create-listing form input,
+.create-listing form select,
+.create-listing form textarea {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 14px;
+
+    margin-bottom: 24px;
+
+    border: 1px solid #d5d5d5;
+    border-radius: 0;
+
+    background: #fff;
+    color: #111;
+
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 15px;
+
+    outline: none;
+
+    transition: border-color 0.2s ease;
 }
 
-.location-row {
-  grid-template-columns: 2fr 1fr 1.5fr;
+.create-listing form input:focus,
+.create-listing form select:focus,
+.create-listing form textarea:focus {
+    border-color: #111;
 }
 
-
-/* =========================================
-   FORM GROUP
-========================================= */
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 20px;
-}
-
-.form-group:last-child {
-  margin-bottom: 0;
-}
-
-.form-group label {
-  font-size: 13px;
-  font-weight: 500;
-  color: #333;
-}
-
-
-/* =========================================
-   INPUTS
-========================================= */
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-  width: 100%;
-  padding: 14px;
-  border: 1px solid #d5d5d5;
-  border-radius: 0;
-  background: #fff;
-  color: #111;
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 15px;
-  outline: none;
-  transition: border-color 0.2s ease;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-  border-color: #111;
-}
-
-.form-group input::placeholder,
-.form-group textarea::placeholder {
-  color: #999;
+.create-listing form input::placeholder,
+.create-listing form textarea::placeholder {
+    color: #999;
 }
 
 
@@ -127,8 +88,14 @@
    SELECT
 ========================================= */
 
-.form-group select {
-  cursor: pointer;
+.create-listing form select {
+    cursor: pointer;
+}
+
+.create-listing form select:disabled {
+    background: #f5f5f5;
+    color: #999;
+    cursor: not-allowed;
 }
 
 
@@ -136,59 +103,125 @@
    TEXTAREA
 ========================================= */
 
-.form-group textarea {
-  resize: vertical;
-  min-height: 150px;
-  line-height: 1.5;
+.create-listing form textarea {
+    min-height: 160px;
+    line-height: 1.5;
+    resize: vertical;
 }
 
 
 /* =========================================
-   HELP TEXT
+   IMAGE INPUTS
 ========================================= */
 
-.form-help {
-  margin: 0;
-  color: #777;
-  font-size: 12px;
+.image-input-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.image-input-row input {
+    flex: 1;
 }
 
 
 /* =========================================
-   BUTTONS
+   REMOVE IMAGE BUTTON
 ========================================= */
 
-.form-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  padding: 25px 30px;
+.image-input-row button {
+    flex-shrink: 0;
+
+    padding: 14px 18px;
+
+    border: 1px solid #d5d5d5;
+    border-radius: 0;
+
+    background: #fff;
+    color: #111;
+
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease,
+                border-color 0.2s ease;
 }
 
-.cancel-button,
-.publish-button {
-  padding: 13px 22px;
-  border: none;
-  border-radius: 0;
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 14px;
-  cursor: pointer;
-  transition: opacity 0.2s ease;
+.image-input-row button:hover {
+    background: #f5f5f5;
+    border-color: #111;
 }
 
-.cancel-button {
-  background: #eeeeee;
-  color: #111;
+
+/* =========================================
+   ADD IMAGE BUTTON
+========================================= */
+
+.create-listing form > button[type="button"] {
+    display: block;
+
+    padding: 13px 20px;
+
+    margin-top: -5px;
+    margin-bottom: 30px;
+
+    border: 1px solid #111;
+    border-radius: 0;
+
+    background: #fff;
+    color: #111;
+
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease,
+                color 0.2s ease;
 }
 
-.publish-button {
-  background: #111;
-  color: #fff;
+.create-listing form > button[type="button"]:hover {
+    background: #111;
+    color: #fff;
 }
 
-.cancel-button:hover,
-.publish-button:hover {
-  opacity: 0.75;
+
+/* =========================================
+   SUBMIT BUTTON
+========================================= */
+
+.create-listing form > button[type="submit"] {
+    width: 100%;
+
+    padding: 16px 22px;
+
+    margin-top: 5px;
+
+    border: none;
+    border-radius: 0;
+
+    background: #111;
+    color: #fff;
+
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: opacity 0.2s ease;
+}
+
+.create-listing form > button[type="submit"]:hover {
+    opacity: 0.75;
+}
+
+.create-listing form > button[type="submit"]:disabled {
+    background: #999;
+    cursor: not-allowed;
+    opacity: 1;
 }
 
 
@@ -198,36 +231,39 @@
 
 @media (max-width: 700px) {
 
-  .create-listing {
-    padding: 30px 15px 60px;
-  }
+    .create-listing {
+        padding: 30px 15px 60px;
+    }
 
-  .create-listing-header {
-    margin-bottom: 30px;
-  }
+    .create-listing h1 {
+        font-size: 34px;
+        margin-bottom: 28px;
+    }
 
-  .create-listing-header h1 {
-    font-size: 34px;
-  }
+    .create-listing form {
+        padding: 25px 20px;
+    }
 
-  .form-section {
-    padding: 25px 20px;
-  }
+    .image-input-row {
+        flex-direction: column;
+        gap: 0;
+    }
 
-  .form-row,
-  .location-row {
-    grid-template-columns: 1fr;
-    gap: 0;
-  }
+    .image-input-row input {
+        width: 100%;
+    }
 
-  .form-actions {
-    flex-direction: column-reverse;
-    padding: 20px;
-  }
+    .image-input-row button {
+        margin-top: -14px;
+        margin-bottom: 20px;
+    }
 
-  .cancel-button,
-  .publish-button {
-    width: 100%;
-  }
+    .create-listing form > button[type="button"] {
+        width: 100%;
+        margin-top: 0;
+    }
 
+    .create-listing form > button[type="submit"] {
+        margin-top: 5px;
+    }
 }

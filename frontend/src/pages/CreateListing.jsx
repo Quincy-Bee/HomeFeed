@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import "./CreateListings.css";
 
 const neighborhoods = {
+
     Manhattan: [
         "Battery Park City",
         "Chelsea",
@@ -42,8 +43,6 @@ const neighborhoods = {
         "Borough Park",
         "Brighton Beach",
         "Brooklyn Heights",
-        "Bushwick",
-        "Carroll Gardens",
         "Clinton Hill",
         "Cobble Hill",
         "Coney Island",
@@ -73,171 +72,153 @@ const neighborhoods = {
         "Elmhurst",
         "Flushing",
         "Forest Hills",
+        "Fresh Meadows",
         "Jackson Heights",
         "Jamaica",
         "Long Island City",
         "Maspeth",
         "Middle Village",
-        "Rego Park",
         "Ridgewood",
         "Sunnyside",
+        "Woodhaven",
         "Woodside"
     ],
 
     Bronx: [
         "Bedford Park",
         "Belmont",
+        "Castle Hill",
+        "Claremont",
         "Concourse",
         "Fordham",
-        "Highbridge",
         "Kingsbridge",
+        "Morris Heights",
         "Morris Park",
         "Morrisania",
-        "Mott Haven",
+        "Norwood",
+        "Parkchester",
+        "Pelham Bay",
         "Riverdale",
         "Soundview",
         "Throgs Neck",
         "University Heights",
         "Wakefield",
-        "Westchester Square"
+        "West Farms",
+        "Woodlawn"
     ],
 
     "Staten Island": [
         "Annadale",
         "Arden Heights",
+        "Castleton Corners",
         "Clifton",
         "Eltingville",
         "Great Kills",
+        "Graniteville",
         "Grasmere",
+        "Huguenot",
         "New Dorp",
         "New Springville",
+        "Oakwood",
+        "Pleasant Plains",
+        "Port Richmond",
         "Rosebank",
         "St. George",
-        "Stapleton",
-        "Tottenville"
+        "Tottenville",
+        "West Brighton"
     ]
 };
+
 
 function CreateListing() {
 
     const navigate = useNavigate();
 
-    // ==========================================
-    // USER / ACCOUNT TYPE
-    // ==========================================
+    const [searchParams] = useSearchParams();
 
-    const user = JSON.parse(
-        localStorage.getItem("user") || "{}"
-    );
+    /*
+     * The Dashboard buttons send:
+     *
+     * /dashboard/create?type=sale
+     * /dashboard/create?type=rent
+     *
+     * This determines the initial listing type.
+     */
 
-    const accountType = user.accountType || "broker";
-
-    const isFSBO = accountType === "fsbo";
-    const isFRBO = accountType === "frbo";
-    const isOwner = isFSBO || isFRBO;
-
-
-    // ==========================================
-    // DEFAULT LISTING TYPE
-    // ==========================================
-
-    const defaultListingType =
-        isFSBO
-            ? "For Sale"
-            : isFRBO
-                ? "For Rent"
-                : "For Sale";
+    const initialType =
+        searchParams.get("type") === "rent"
+            ? "For Rent"
+            : "For Sale";
 
 
     const [listing, setListing] = useState({
-        listingType: defaultListingType,
-        propertyType: isFRBO ? "Rental" : "Condo",
+
+        listingType: initialType,
+
+        propertyType: "Condo",
+
         address: "",
+
         apartmentNumber: "",
+
         borough: "",
+
         neighborhood: "",
+
         city: "New York City",
+
         state: "NY",
+
         zipCode: "",
+
         price: "",
+
         bedrooms: "",
+
         bathrooms: "",
+
         description: "",
+
         images: [""]
     });
+
 
     const [submitting, setSubmitting] = useState(false);
 
 
-    // ==========================================
-    // PAGE TITLE
-    // ==========================================
-
-    const getPageTitle = () => {
-
-        if (isFSBO) {
-            return "Create For Sale Listing";
-        }
-
-        if (isFRBO) {
-            return "Create Rental Listing";
-        }
-
-        return "Create Listing";
-
-    };
-
-
-    // ==========================================
-    // PAGE DESCRIPTION
-    // ==========================================
-
-    const getPageDescription = () => {
-
-        if (isFSBO) {
-            return "Add your property details to list your home for sale.";
-        }
-
-        if (isFRBO) {
-            return "Add your property details to list your home for rent.";
-        }
-
-        return "Add the property details below.";
-
-    };
-
-
-    // ==========================================
     // HANDLE FORM CHANGES
-    // ==========================================
-
     const handleChange = (event) => {
 
         const { name, value } = event.target;
 
+
         if (name === "borough") {
 
             setListing((currentListing) => ({
+
                 ...currentListing,
+
                 borough: value,
+
                 neighborhood: ""
+
             }));
 
             return;
         }
 
-        setListing((currentListing) => ({
-            ...currentListing,
-            [name]: value
-        }));
 
+        setListing((currentListing) => ({
+
+            ...currentListing,
+
+            [name]: value
+
+        }));
     };
 
 
-    // ==========================================
     // HANDLE IMAGE CHANGE
-    // ==========================================
-
     const handleImageChange = (index, value) => {
 
         setListing((currentListing) => {
@@ -248,37 +229,35 @@ function CreateListing() {
 
             updatedImages[index] = value;
 
+
             return {
+
                 ...currentListing,
+
                 images: updatedImages
+
             };
-
         });
-
     };
 
 
-    // ==========================================
     // ADD IMAGE FIELD
-    // ==========================================
-
     const addImageField = () => {
 
         setListing((currentListing) => ({
+
             ...currentListing,
+
             images: [
                 ...currentListing.images,
                 ""
             ]
-        }));
 
+        }));
     };
 
 
-    // ==========================================
     // REMOVE IMAGE FIELD
-    // ==========================================
-
     const removeImageField = (index) => {
 
         setListing((currentListing) => {
@@ -289,29 +268,31 @@ function CreateListing() {
                         imageIndex !== index
                 );
 
+
             return {
+
                 ...currentListing,
+
                 images:
                     updatedImages.length > 0
                         ? updatedImages
                         : [""]
+
             };
 
         });
-
     };
 
 
-    // ==========================================
     // CREATE LISTING
-    // ==========================================
-
     const createListing = async (event) => {
 
         event.preventDefault();
 
+
         const token =
             localStorage.getItem("token");
+
 
         if (!token) {
 
@@ -324,11 +305,12 @@ function CreateListing() {
             return;
         }
 
+
         setSubmitting(true);
+
 
         try {
 
-            // Remove empty image fields
             const cleanedImages =
                 listing.images.filter(
                     (image) =>
@@ -337,19 +319,22 @@ function CreateListing() {
 
 
             const listingData = {
+
                 ...listing,
 
-                price:
-                    Number(listing.price),
+                price: Number(
+                    listing.price
+                ),
 
-                bedrooms:
-                    Number(listing.bedrooms),
+                bedrooms: Number(
+                    listing.bedrooms
+                ),
 
-                bathrooms:
-                    Number(listing.bathrooms),
+                bathrooms: Number(
+                    listing.bathrooms
+                ),
 
-                images:
-                    cleanedImages
+                images: cleanedImages
             };
 
 
@@ -359,6 +344,7 @@ function CreateListing() {
                     method: "POST",
 
                     headers: {
+
                         "Content-Type":
                             "application/json",
 
@@ -366,10 +352,9 @@ function CreateListing() {
                             `Bearer ${token}`
                     },
 
-                    body:
-                        JSON.stringify(
-                            listingData
-                        )
+                    body: JSON.stringify(
+                        listingData
+                    )
                 }
             );
 
@@ -384,7 +369,6 @@ function CreateListing() {
                     data.message ||
                     "Failed to create listing"
                 );
-
             }
 
 
@@ -406,12 +390,12 @@ function CreateListing() {
 
             alert(error.message);
 
+
         } finally {
 
             setSubmitting(false);
 
         }
-
     };
 
 
@@ -419,642 +403,360 @@ function CreateListing() {
 
         <div className="create-listing">
 
-            {/* ==========================================
-                HEADER
-            ========================================== */}
-
-            <div className="create-listing-header">
-
-                <h1>
-                    {getPageTitle()}
-                </h1>
-
-                <p>
-                    {getPageDescription()}
-                </p>
-
-            </div>
+            <h1>
+                Create Listing
+            </h1>
 
 
             <form
-                className="create-listing-form"
                 onSubmit={createListing}
             >
 
+                {/* LISTING TYPE */}
 
-                {/* ==========================================
-                    PROPERTY INFORMATION
-                ========================================== */}
+                <label>
+                    Listing Type
+                </label>
 
-                <div className="form-section">
+                <select
+                    name="listingType"
+                    value={listing.listingType}
+                    onChange={handleChange}
+                >
 
-                    <h2>
-                        Property Information
-                    </h2>
+                    <option value="For Sale">
+                        For Sale
+                    </option>
 
-                    <div className="form-row">
+                    <option value="For Rent">
+                        For Rent
+                    </option>
 
-                        <div className="form-group">
+                </select>
 
-                            <label htmlFor="listingType">
-                                Listing Type
-                            </label>
 
-                            {isOwner ? (
+                {/* PROPERTY TYPE */}
 
-                                <input
-                                    id="listingType"
-                                    type="text"
-                                    value={
-                                        listing.listingType
-                                    }
-                                    readOnly
-                                />
+                <label>
+                    Property Type
+                </label>
 
-                            ) : (
+                <select
+                    name="propertyType"
+                    value={listing.propertyType}
+                    onChange={handleChange}
+                >
 
-                                <select
-                                    id="listingType"
-                                    name="listingType"
-                                    value={
-                                        listing.listingType
-                                    }
-                                    onChange={
-                                        handleChange
-                                    }
-                                    required
+                    <option value="Condo">
+                        Condo
+                    </option>
+
+                    <option value="Co-op">
+                        Co-op
+                    </option>
+
+                    <option value="Townhouse">
+                        Townhouse
+                    </option>
+
+                    <option value="Rental">
+                        Rental
+                    </option>
+
+                </select>
+
+
+                {/* ADDRESS */}
+
+                <label>
+                    Address
+                </label>
+
+                <input
+                    name="address"
+                    placeholder="Street Address"
+                    value={listing.address}
+                    onChange={handleChange}
+                    required
+                />
+
+
+                {/* APARTMENT */}
+
+                <label>
+                    Apartment Number
+                </label>
+
+                <input
+                    name="apartmentNumber"
+                    placeholder="Apartment / Unit"
+                    value={
+                        listing.apartmentNumber
+                    }
+                    onChange={handleChange}
+                />
+
+
+                {/* BOROUGH */}
+
+                <label>
+                    Borough
+                </label>
+
+                <select
+                    name="borough"
+                    value={listing.borough}
+                    onChange={handleChange}
+                    required
+                >
+
+                    <option value="">
+                        Select Borough
+                    </option>
+
+                    {Object.keys(
+                        neighborhoods
+                    ).map((borough) => (
+
+                        <option
+                            key={borough}
+                            value={borough}
+                        >
+                            {borough}
+                        </option>
+
+                    ))}
+
+                </select>
+
+
+                {/* NEIGHBORHOOD */}
+
+                <label>
+                    Neighborhood
+                </label>
+
+                <select
+                    name="neighborhood"
+                    value={listing.neighborhood}
+                    onChange={handleChange}
+                    required
+                    disabled={!listing.borough}
+                >
+
+                    <option value="">
+                        Select Neighborhood
+                    </option>
+
+                    {listing.borough &&
+                        neighborhoods[
+                            listing.borough
+                        ]?.map(
+                            (neighborhood) => (
+
+                                <option
+                                    key={neighborhood}
+                                    value={neighborhood}
                                 >
+                                    {neighborhood}
+                                </option>
 
-                                    <option value="For Sale">
-                                        For Sale
-                                    </option>
+                            )
+                        )}
 
-                                    <option value="For Rent">
-                                        For Rent
-                                    </option>
+                </select>
 
-                                </select>
+
+                {/* CITY */}
+
+                <label>
+                    City
+                </label>
+
+                <input
+                    name="city"
+                    value={listing.city}
+                    onChange={handleChange}
+                    required
+                />
+
+
+                {/* STATE */}
+
+                <label>
+                    State
+                </label>
+
+                <input
+                    name="state"
+                    value={listing.state}
+                    onChange={handleChange}
+                    required
+                />
+
+
+                {/* ZIP CODE */}
+
+                <label>
+                    ZIP Code
+                </label>
+
+                <input
+                    name="zipCode"
+                    placeholder="ZIP Code"
+                    value={listing.zipCode}
+                    onChange={handleChange}
+                    required
+                />
+
+
+                {/* PRICE */}
+
+                <label>
+                    {listing.listingType ===
+                    "For Rent"
+                        ? "Monthly Rent"
+                        : "Price"}
+                </label>
+
+                <input
+                    name="price"
+                    type="number"
+                    min="0"
+                    placeholder={
+                        listing.listingType ===
+                        "For Rent"
+                            ? "Monthly Rent"
+                            : "Sale Price"
+                    }
+                    value={listing.price}
+                    onChange={handleChange}
+                    required
+                />
+
+
+                {/* BEDROOMS */}
+
+                <label>
+                    Bedrooms
+                </label>
+
+                <input
+                    name="bedrooms"
+                    type="number"
+                    min="0"
+                    placeholder="Bedrooms"
+                    value={listing.bedrooms}
+                    onChange={handleChange}
+                    required
+                />
+
+
+                {/* BATHROOMS */}
+
+                <label>
+                    Bathrooms
+                </label>
+
+                <input
+                    name="bathrooms"
+                    type="number"
+                    min="0"
+                    step="0.5"
+                    placeholder="Bathrooms"
+                    value={listing.bathrooms}
+                    onChange={handleChange}
+                    required
+                />
+
+
+                {/* DESCRIPTION */}
+
+                <label>
+                    Description
+                </label>
+
+                <textarea
+                    name="description"
+                    placeholder="Describe the property..."
+                    value={listing.description}
+                    onChange={handleChange}
+                    rows="6"
+                />
+
+
+                {/* IMAGES */}
+
+                <label>
+                    Listing Images
+                </label>
+
+                {listing.images.map(
+                    (image, index) => (
+
+                        <div
+                            className="image-input-row"
+                            key={index}
+                        >
+
+                            <input
+                                type="url"
+                                placeholder="Image URL"
+                                value={image}
+                                onChange={(event) =>
+                                    handleImageChange(
+                                        index,
+                                        event.target.value
+                                    )
+                                }
+                            />
+
+
+                            {listing.images.length >
+                                1 && (
+
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        removeImageField(
+                                            index
+                                        )
+                                    }
+                                >
+                                    Remove
+                                </button>
 
                             )}
 
                         </div>
 
+                    )
+                )}
 
-                        <div className="form-group">
 
-                            <label htmlFor="propertyType">
-                                Property Type
-                            </label>
+                <button
+                    type="button"
+                    onClick={addImageField}
+                >
+                    Add Another Image
+                </button>
 
-                            <select
-                                id="propertyType"
-                                name="propertyType"
-                                value={
-                                    listing.propertyType
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                required
-                            >
 
-                                <option value="Condo">
-                                    Condo
-                                </option>
+                {/* SUBMIT */}
 
-                                <option value="Co-op">
-                                    Co-op
-                                </option>
+                <button
+                    type="submit"
+                    disabled={submitting}
+                >
 
-                                <option value="Townhouse">
-                                    Townhouse
-                                </option>
+                    {submitting
+                        ? "Creating Listing..."
+                        : listing.listingType ===
+                          "For Rent"
+                            ? "Create Rental Listing"
+                            : "Create For Sale Listing"}
 
-                                <option value="Rental">
-                                    Rental
-                                </option>
-
-                            </select>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                {/* ==========================================
-                    LOCATION
-                ========================================== */}
-
-                <div className="form-section">
-
-                    <h2>
-                        Location
-                    </h2>
-
-
-                    <div className="form-group">
-
-                        <label htmlFor="address">
-                            Street Address
-                        </label>
-
-                        <input
-                            id="address"
-                            type="text"
-                            name="address"
-                            placeholder="527 Grand Avenue"
-                            value={
-                                listing.address
-                            }
-                            onChange={
-                                handleChange
-                            }
-                            required
-                        />
-
-                    </div>
-
-
-                    <div className="form-row">
-
-                        <div className="form-group">
-
-                            <label htmlFor="apartmentNumber">
-                                Apartment / Unit
-                            </label>
-
-                            <input
-                                id="apartmentNumber"
-                                type="text"
-                                name="apartmentNumber"
-                                placeholder="#704"
-                                value={
-                                    listing.apartmentNumber
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                            />
-
-                        </div>
-
-
-                        <div className="form-group">
-
-                            <label htmlFor="borough">
-                                Borough
-                            </label>
-
-                            <select
-                                id="borough"
-                                name="borough"
-                                value={
-                                    listing.borough
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                required
-                            >
-
-                                <option value="">
-                                    Select borough
-                                </option>
-
-                                <option value="Manhattan">
-                                    Manhattan
-                                </option>
-
-                                <option value="Brooklyn">
-                                    Brooklyn
-                                </option>
-
-                                <option value="Queens">
-                                    Queens
-                                </option>
-
-                                <option value="Bronx">
-                                    Bronx
-                                </option>
-
-                                <option value="Staten Island">
-                                    Staten Island
-                                </option>
-
-                            </select>
-
-                        </div>
-
-                    </div>
-
-
-                    <div className="form-row">
-
-                        <div className="form-group">
-
-                            <label htmlFor="neighborhood">
-                                Neighborhood
-                            </label>
-
-                            <select
-                                id="neighborhood"
-                                name="neighborhood"
-                                value={
-                                    listing.neighborhood
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                disabled={
-                                    !listing.borough
-                                }
-                                required
-                            >
-
-                                <option value="">
-
-                                    {listing.borough
-                                        ? "Select neighborhood"
-                                        : "Select borough first"}
-
-                                </option>
-
-
-                                {listing.borough &&
-                                    neighborhoods[
-                                        listing.borough
-                                    ]?.map(
-                                        (
-                                            neighborhood
-                                        ) => (
-
-                                            <option
-                                                key={
-                                                    neighborhood
-                                                }
-                                                value={
-                                                    neighborhood
-                                                }
-                                            >
-                                                {
-                                                    neighborhood
-                                                }
-                                            </option>
-
-                                        )
-                                    )}
-
-                            </select>
-
-                        </div>
-
-
-                        <div className="form-group">
-
-                            <label htmlFor="city">
-                                City
-                            </label>
-
-                            <select
-                                id="city"
-                                name="city"
-                                value={
-                                    listing.city
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                required
-                            >
-
-                                <option value="New York City">
-                                    New York City
-                                </option>
-
-                            </select>
-
-                        </div>
-
-                    </div>
-
-
-                    <div className="form-row">
-
-                        <div className="form-group">
-
-                            <label htmlFor="state">
-                                State
-                            </label>
-
-                            <select
-                                id="state"
-                                name="state"
-                                value={
-                                    listing.state
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                required
-                            >
-
-                                <option value="NY">
-                                    NY
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <div className="form-group">
-
-                            <label htmlFor="zipCode">
-                                ZIP Code
-                            </label>
-
-                            <input
-                                id="zipCode"
-                                type="text"
-                                name="zipCode"
-                                placeholder="11238"
-                                value={
-                                    listing.zipCode
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                required
-                            />
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                {/* ==========================================
-                    PRICE & DETAILS
-                ========================================== */}
-
-                <div className="form-section">
-
-                    <h2>
-                        Price & Details
-                    </h2>
-
-                    <div className="form-row">
-
-                        <div className="form-group">
-
-                            <label htmlFor="price">
-                                {isFRBO
-                                    ? "Monthly Rent"
-                                    : "Price"}
-                            </label>
-
-                            <input
-                                id="price"
-                                type="number"
-                                name="price"
-                                min="0"
-                                value={
-                                    listing.price
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                required
-                            />
-
-                        </div>
-
-
-                        <div className="form-group">
-
-                            <label htmlFor="bedrooms">
-                                Bedrooms
-                            </label>
-
-                            <input
-                                id="bedrooms"
-                                type="number"
-                                name="bedrooms"
-                                min="0"
-                                value={
-                                    listing.bedrooms
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                required
-                            />
-
-                        </div>
-
-
-                        <div className="form-group">
-
-                            <label htmlFor="bathrooms">
-                                Bathrooms
-                            </label>
-
-                            <input
-                                id="bathrooms"
-                                type="number"
-                                name="bathrooms"
-                                min="0"
-                                step="0.5"
-                                value={
-                                    listing.bathrooms
-                                }
-                                onChange={
-                                    handleChange
-                                }
-                                required
-                            />
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                {/* ==========================================
-                    PHOTOS
-                ========================================== */}
-
-                <div className="form-section">
-
-                    <h2>
-                        Photos
-                    </h2>
-
-                    <p className="photo-instructions">
-                        Add one or more property photo
-                        URLs. The first photo will be
-                        used as the main listing image.
-                    </p>
-
-
-                    <div className="image-fields">
-
-                        {listing.images.map(
-                            (image, index) => (
-
-                                <div
-                                    className="image-field"
-                                    key={index}
-                                >
-
-                                    <div className="form-group">
-
-                                        <label
-                                            htmlFor={`image-${index}`}
-                                        >
-                                            Photo{" "}
-                                            {index + 1}
-                                        </label>
-
-                                        <input
-                                            id={`image-${index}`}
-                                            type="url"
-                                            value={
-                                                image
-                                            }
-                                            onChange={(
-                                                event
-                                            ) =>
-                                                handleImageChange(
-                                                    index,
-                                                    event
-                                                        .target
-                                                        .value
-                                                )
-                                            }
-                                            placeholder="https://..."
-                                            required={
-                                                index === 0
-                                            }
-                                        />
-
-                                    </div>
-
-
-                                    {listing.images
-                                        .length >
-                                        1 && (
-
-                                        <button
-                                            type="button"
-                                            className="remove-image-button"
-                                            onClick={() =>
-                                                removeImageField(
-                                                    index
-                                                )
-                                            }
-                                        >
-                                            Remove
-                                        </button>
-
-                                    )}
-
-                                </div>
-
-                            )
-                        )}
-
-                    </div>
-
-
-                    <button
-                        type="button"
-                        className="add-image-button"
-                        onClick={
-                            addImageField
-                        }
-                    >
-                        + Add Another Photo
-                    </button>
-
-                </div>
-
-
-                {/* ==========================================
-                    DESCRIPTION
-                ========================================== */}
-
-                <div className="form-section">
-
-                    <h2>
-                        Description
-                    </h2>
-
-                    <div className="form-group">
-
-                        <label htmlFor="description">
-                            Property Description
-                        </label>
-
-                        <textarea
-                            id="description"
-                            name="description"
-                            value={
-                                listing.description
-                            }
-                            onChange={
-                                handleChange
-                            }
-                            rows="7"
-                            placeholder="Describe the property..."
-                            required
-                        />
-
-                    </div>
-
-                </div>
-
-
-                {/* ==========================================
-                    FORM ACTIONS
-                ========================================== */}
-
-                <div className="form-actions">
-
-                    <button
-                        type="button"
-                        className="cancel-button"
-                        onClick={() =>
-                            navigate(
-                                "/dashboard"
-                            )
-                        }
-                    >
-                        Cancel
-                    </button>
-
-
-                    <button
-                        type="submit"
-                        className="publish-button"
-                        disabled={
-                            submitting
-                        }
-                    >
-                        {submitting
-                            ? "Publishing..."
-                            : isFSBO
-                                ? "Publish For Sale Listing"
-                                : isFRBO
-                                    ? "Publish Rental Listing"
-                                    : "Publish Listing"}
-                    </button>
-
-                </div>
+                </button>
 
             </form>
 
