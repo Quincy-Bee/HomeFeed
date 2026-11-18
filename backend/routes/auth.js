@@ -18,12 +18,17 @@ router.post("/register", async (req, res) => {
             10
         );
 
+        const accountType = req.body.accountType || "broker";
+
         const newUser = new User({
             name: req.body.name,
             email: req.body.email,
             phone: req.body.phone,
-            brokerage: req.body.brokerage,
-            headshot: req.body.headshot,
+            brokerage: req.body.brokerage || "",
+            headshot: accountType === "broker"
+                ? req.body.headshot || ""
+                : "",
+            accountType: accountType,
             password: hashedPassword
         });
 
@@ -38,6 +43,7 @@ router.post("/register", async (req, res) => {
                 phone: savedUser.phone,
                 brokerage: savedUser.brokerage,
                 headshot: savedUser.headshot,
+                accountType: savedUser.accountType,
                 role: savedUser.role
             }
         });
@@ -86,7 +92,8 @@ router.post("/login", async (req, res) => {
         const token = jwt.sign(
             {
                 id: user._id,
-                role: user.role
+                role: user.role,
+                accountType: user.accountType
             },
             process.env.JWT_SECRET,
             {
@@ -107,6 +114,7 @@ router.post("/login", async (req, res) => {
                 phone: user.phone,
                 brokerage: user.brokerage,
                 headshot: user.headshot,
+                accountType: user.accountType,
                 role: user.role
             }
 

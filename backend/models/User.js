@@ -33,6 +33,12 @@ const userSchema = new mongoose.Schema(
             default: ""
         },
 
+        accountType: {
+            type: String,
+            enum: ["broker", "fsbo", "frbo"],
+            default: "broker"
+        },
+
         role: {
             type: String,
             enum: ["user", "admin"],
