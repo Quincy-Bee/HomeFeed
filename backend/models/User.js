@@ -1,3 +1,4 @@
+
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
@@ -10,7 +11,9 @@ const userSchema = new mongoose.Schema(
         email: {
             type: String,
             required: true,
-            unique: true
+            unique: true,
+            lowercase: true,
+            trim: true
         },
 
         password: {
@@ -35,8 +38,8 @@ const userSchema = new mongoose.Schema(
 
         accountType: {
             type: String,
-            enum: ["broker", "fsbo", "frbo"],
-            default: "broker"
+            enum: ["personal", "broker", "fsbo", "frbo"],
+            default: "personal"
         },
 
         role: {

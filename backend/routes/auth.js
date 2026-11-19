@@ -1,3 +1,4 @@
+
 import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -5,30 +6,87 @@ import User from "../models/User.js";
 
 const router = express.Router();
 
-
 // =========================================
-// Register user
+// REGISTER USER
 // =========================================
 
 router.post("/register", async (req, res) => {
     try {
+        const {
+            name,
+            email,
+            phone,
+            brokerage,
+            headshot,
+            password,
+            accountType
+        } = req.body;
 
-        const hashedPassword = await bcrypt.hash(
-            req.body.password,
-            10
-        );
+        // Validate required fields
+        if (!name || !email || !phone || !password) {
+            return res.status(400).json({
+                message: "Please complete all required fields."
+            });
+        }
 
-        const accountType = req.body.accountType || "broker";
+        // Validate account type
+        const selectedAccountType = accountType || "personal";
 
+        if (!["personal", "broker"].includes(selectedAccountType)) {
+            return res.status(400).json({
+                message: "Invalid account type."
+            });
+        }
+
+        // Brokerage is required for brokers only
+        if (
+            selectedAccountType === "broker" &&
+            !brokerage?.trim()
+        ) {
+            return res.status(400).json({
+                message: "Please enter your brokerage name."
+            });
+        }
+
+        if (password.length < 8) {
+            return res.status(400).json({
+                message: "Password must be at least 8 characters."
+            });
+        }
+
+        const normalizedEmail = email.trim().toLowerCase();
+
+        // Check whether email already exists
+        const existingUser = await User.findOne({
+            email: normalizedEmail
+        });
+
+        if (existingUser) {
+            return res.status(409).json({
+                message: "An account with this email already exists."
+            });
+        }
+
+        // Hash password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Create account
         const newUser = new User({
-            name: req.body.name,
-            email: req.body.email,
-            phone: req.body.phone,
-            brokerage: req.body.brokerage || "",
-            headshot: accountType === "broker"
-                ? req.body.headshot || ""
-                : "",
-            accountType: accountType,
+            name: name.trim(),
+            email: normalizedEmail,
+            phone: phone.trim(),
+
+            brokerage:
+                selectedAccountType === "broker"
+                    ? brokerage.trim()
+                    : "",
+
+            headshot:
+                selectedAccountType === "broker"
+                    ? headshot?.trim() || ""
+                    : "",
+
+            accountType: selectedAccountType,
             password: hashedPassword
         });
 
@@ -49,26 +107,31 @@ router.post("/register", async (req, res) => {
         });
 
     } catch (error) {
-
         console.log("Registration error:", error);
+
+        if (error.code === 11000) {
+            return res.status(409).json({
+                message: "An account with this email already exists."
+            });
+        }
 
         res.status(500).json({
             message: error.message
         });
-
     }
 });
 
 
 // =========================================
-// Login user
+// LOGIN USER
 // =========================================
 
 router.post("/login", async (req, res) => {
     try {
+        const normalizedEmail = req.body.email?.trim().toLowerCase();
 
         const user = await User.findOne({
-            email: req.body.email
+            email: normalizedEmail
         });
 
         if (!user) {
@@ -102,11 +165,8 @@ router.post("/login", async (req, res) => {
         );
 
         res.json({
-
             message: "Login successful",
-
             token,
-
             user: {
                 id: user._id,
                 name: user.name,
@@ -117,19 +177,15 @@ router.post("/login", async (req, res) => {
                 accountType: user.accountType,
                 role: user.role
             }
-
         });
 
     } catch (error) {
-
         console.log("Login error:", error);
 
         res.status(500).json({
             message: error.message
         });
-
     }
 });
-
 
 export default router;
