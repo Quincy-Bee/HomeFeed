@@ -323,6 +323,35 @@ function ListingDetails() {
                     <button
                         type="button"
                         className="schedule-button"
+                        onClick={() => {
+                            const recipient = listing.owner?.email;
+
+                            if (!recipient) {
+                                window.alert(
+                                    "The listing owner has not provided an email address."
+                                );
+                                return;
+                            }
+
+                            const propertyAddress = [
+                                listing.address,
+                                listing.apartmentNumber
+                            ]
+                                .filter(Boolean)
+                                .join(" ");
+
+                            const subject = `Showing Request: ${propertyAddress}`;
+                            const body = `Hello ${listing.owner.name || "there"},
+
+I'm interested in viewing the property at ${propertyAddress}, ${listing.city}, ${listing.state} ${listing.zipCode}.
+
+Please let me know what showing times are available.
+
+Thank you.`;
+
+                            window.location.href =
+                                `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                        }}
                     >
                         Schedule a Showing
                     </button>
