@@ -1,18 +1,17 @@
+
 .auth-container {
   max-width: 400px;
   margin: 60px auto;
   padding: 30px;
   background: white;
   border-radius: 12px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
 }
-
 
 .auth-container h1 {
   margin-bottom: 25px;
   text-align: center;
 }
-
 
 .auth-container form {
   display: flex;
@@ -20,24 +19,123 @@
   gap: 15px;
 }
 
-
 .auth-container input {
+  width: 100%;
+  box-sizing: border-box;
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 6px;
+  font-size: 14px;
 }
 
+.auth-container input:focus {
+  outline: none;
+  border-color: black;
+}
 
-.auth-container button {
+/* Profile image section */
+
+.profile-image-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 5px 0;
+}
+
+.profile-image-section label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #222;
+}
+
+.profile-image-section p {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #777;
+  margin: 0;
+}
+
+.profile-image-section input {
+  width: 100%;
+}
+
+/* Image preview */
+
+.profile-image-preview {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.profile-image-preview img {
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+}
+
+.profile-image-preview button {
+  padding: 8px 12px;
+  background: #eee;
+  color: #222;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.profile-image-preview button:hover {
+  background: #ddd;
+}
+
+/* Image errors */
+
+.image-error {
+  color: #d93025 !important;
+  font-size: 13px;
+}
+
+/* General authentication errors */
+
+.auth-error {
+  color: #d93025;
+  font-size: 13px;
+  margin: 0;
+}
+
+/* Main submit button */
+
+.auth-container form > button {
   padding: 12px;
   background: black;
   color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  font-size: 15px;
+  transition: opacity 0.2s ease;
 }
 
+.auth-container form > button:hover {
+  opacity: 0.8;
+}
 
-.auth-container button:hover {
-  opacity: .8;
+.auth-container form > button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Mobile responsiveness */
+
+@media (max-width: 480px) {
+  .auth-container {
+    max-width: none;
+    margin: 30px 15px;
+    padding: 22px;
+  }
+
+  .auth-container h1 {
+    font-size: 24px;
+  }
 }
