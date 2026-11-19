@@ -51,6 +51,7 @@ const neighborhoods = {
         "Ditmas Park",
         "Downtown Brooklyn",
         "East Flatbush",
+        "Flatbush",
         "Fort Greene",
         "Gowanus",
         "Greenpoint",
