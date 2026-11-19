@@ -1,6 +1,9 @@
+
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./CreateListings.css";
+
+const MAX_IMAGES = 15;
 
 const neighborhoods = {
     Manhattan: [
@@ -52,6 +55,7 @@ const neighborhoods = {
         "Ditmas Park",
         "Downtown Brooklyn",
         "East Flatbush",
+        "Flatbush",
         "Fort Greene",
         "Gowanus",
         "Greenpoint",
@@ -118,9 +122,7 @@ const neighborhoods = {
     ]
 };
 
-
 function EditListing() {
-
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -145,241 +147,227 @@ function EditListing() {
     const [error, setError] = useState("");
     const [saving, setSaving] = useState(false);
 
+    // Tracks which photo is selected as the primary photo.
+    const [primaryImageIndex, setPrimaryImageIndex] = useState(0);
+
+    // Tracks images that fail to load in the preview.
+    const [imageErrors, setImageErrors] = useState({});
 
     // =========================================
     // GET LISTING
     // =========================================
 
     useEffect(() => {
-
         const getListing = async () => {
-
             try {
-
-                const response = await fetch(
-                    `/api/listings/${id}`
-                );
-
+                const response = await fetch(`/api/listings/${id}`);
                 const data = await response.json();
 
                 if (!response.ok) {
                     throw new Error(
-                        data.message ||
-                        "Failed to load listing"
+                        data.message || "Failed to load listing"
                     );
                 }
 
+                const existingImages =
+                    Array.isArray(data.images) && data.images.length > 0
+                        ? data.images
+                        : [data.image || ""];
+
                 setListing({
-                    listingType:
-                        data.listingType ||
-                        "For Sale",
-
-                    propertyType:
-                        data.propertyType ||
-                        "Condo",
-
-                    address:
-                        data.address ||
-                        "",
-
-                    apartmentNumber:
-                        data.apartmentNumber ||
-                        "",
-
-                    borough:
-                        data.borough ||
-                        "",
-
-                    neighborhood:
-                        data.neighborhood ||
-                        "",
-
-                    city:
-                        data.city ||
-                        "New York City",
-
-                    state:
-                        data.state ||
-                        "NY",
-
-                    zipCode:
-                        data.zipCode ||
-                        "",
-
-                    price:
-                        data.price ??
-                        "",
-
-                    bedrooms:
-                        data.bedrooms ??
-                        "",
-
-                    bathrooms:
-                        data.bathrooms ??
-                        "",
-
-                    description:
-                        data.description ||
-                        "",
-
-                    images:
-                        data.images &&
-                        data.images.length > 0
-                            ? data.images
-                            : [data.image || ""]
+                    listingType: data.listingType || "For Sale",
+                    propertyType: data.propertyType || "Condo",
+                    address: data.address || "",
+                    apartmentNumber: data.apartmentNumber || "",
+                    borough: data.borough || "",
+                    neighborhood: data.neighborhood || "",
+                    city: data.city || "New York City",
+                    state: data.state || "NY",
+                    zipCode: data.zipCode || "",
+                    price: data.price ?? "",
+                    bedrooms: data.bedrooms ?? "",
+                    bathrooms: data.bathrooms ?? "",
+                    description: data.description || "",
+                    images: existingImages
                 });
 
+                setPrimaryImageIndex(0);
+                setImageErrors({});
             } catch (error) {
-
-                console.error(
-                    "Get listing error:",
-                    error
-                );
-
+                console.error("Get listing error:", error);
                 setError(error.message);
-
             } finally {
-
                 setLoading(false);
-
             }
-
         };
 
         getListing();
-
     }, [id]);
-
 
     // =========================================
     // HANDLE INPUT CHANGES
     // =========================================
 
     const handleChange = (event) => {
-
         const { name, value } = event.target;
 
         setListing((currentListing) => ({
             ...currentListing,
-            [name]: value
+            [name]: value,
+            ...(name === "borough" ? { neighborhood: "" } : {})
         }));
-
-
-        if (name === "borough") {
-
-            setListing((currentListing) => ({
-                ...currentListing,
-                borough: value,
-                neighborhood: ""
-            }));
-
-        }
-
     };
-
 
     // =========================================
     // IMAGE CHANGES
     // =========================================
 
-    const handleImageChange = (
-        index,
-        value
-    ) => {
-
+    const handleImageChange = (index, value) => {
         setListing((currentListing) => {
-
-            const updatedImages = [
-                ...currentListing.images
-            ];
-
+            const updatedImages = [...currentListing.images];
             updatedImages[index] = value;
 
             return {
                 ...currentListing,
                 images: updatedImages
             };
-
         });
 
+        // Clear any previous preview error when the URL changes.
+        setImageErrors((currentErrors) => ({
+            ...currentErrors,
+            [index]: false
+        }));
     };
 
+    // =========================================
+    // IMAGE PREVIEW LOAD / ERROR
+    // =========================================
+
+    const handleImageLoad = (index) => {
+        setImageErrors((currentErrors) => ({
+            ...currentErrors,
+            [index]: false
+        }));
+    };
+
+    const handleImageError = (index) => {
+        setImageErrors((currentErrors) => ({
+            ...currentErrors,
+            [index]: true
+        }));
+    };
 
     // =========================================
     // ADD IMAGE
     // =========================================
 
     const addImageField = () => {
+        if (listing.images.length >= MAX_IMAGES) {
+            setError(`You can add a maximum of ${MAX_IMAGES} photos.`);
+            return;
+        }
+
+        setError("");
 
         setListing((currentListing) => ({
             ...currentListing,
-            images: [
-                ...currentListing.images,
-                ""
-            ]
+            images: [...currentListing.images, ""]
         }));
-
     };
-
 
     // =========================================
     // REMOVE IMAGE
     // =========================================
 
     const removeImageField = (index) => {
-
         setListing((currentListing) => {
-
-            const updatedImages =
-                currentListing.images.filter(
-                    (_, imageIndex) =>
-                        imageIndex !== index
-                );
+            const updatedImages = currentListing.images.filter(
+                (_, imageIndex) => imageIndex !== index
+            );
 
             return {
                 ...currentListing,
-                images:
-                    updatedImages.length > 0
-                        ? updatedImages
-                        : [""]
+                images: updatedImages.length > 0 ? updatedImages : [""]
             };
-
         });
 
+        setImageErrors((currentErrors) => {
+            const updatedErrors = {};
+
+            Object.keys(currentErrors).forEach((key) => {
+                const oldIndex = Number(key);
+
+                if (oldIndex < index) {
+                    updatedErrors[oldIndex] = currentErrors[key];
+                } else if (oldIndex > index) {
+                    updatedErrors[oldIndex - 1] = currentErrors[key];
+                }
+            });
+
+            return updatedErrors;
+        });
+
+        setPrimaryImageIndex((currentIndex) => {
+            if (currentIndex === index) return 0;
+            if (currentIndex > index) return currentIndex - 1;
+            return currentIndex;
+        });
     };
 
+    // =========================================
+    // SELECT PRIMARY PHOTO
+    // =========================================
+
+    const selectPrimaryImage = (index) => {
+        setPrimaryImageIndex(index);
+    };
 
     // =========================================
     // UPDATE LISTING
     // =========================================
 
     const updateListing = async (event) => {
-
         event.preventDefault();
 
-        const token =
-            localStorage.getItem("token");
+        const token = localStorage.getItem("token");
 
         if (!token) {
-
-            setError(
-                "You must be logged in to edit a listing."
-            );
-
+            setError("You must be logged in to edit a listing.");
             return;
+        }
 
+        // Don't save photos that failed to load in the preview.
+        const hasBrokenImages = listing.images.some(
+            (image, index) => image.trim() !== "" && imageErrors[index]
+        );
+
+        if (hasBrokenImages) {
+            setError(
+                "One or more photos could not be loaded. Please check the image URLs before saving."
+            );
+            return;
         }
 
         setSaving(true);
         setError("");
 
+        // Keep track of each image's original position.
+        const imageEntries = listing.images
+            .map((image, index) => ({
+                url: image.trim(),
+                originalIndex: index
+            }))
+            .filter((image) => image.url !== "");
 
-        const cleanedImages =
-            listing.images.filter(
-                (image) =>
-                    image.trim() !== ""
-            );
+        // Move the selected primary photo to the beginning.
+        imageEntries.sort((a, b) => {
+            if (a.originalIndex === primaryImageIndex) return -1;
+            if (b.originalIndex === primaryImageIndex) return 1;
+            return a.originalIndex - b.originalIndex;
+        });
 
+        const cleanedImages = imageEntries.map((image) => image.url);
 
         const listingData = {
             ...listing,
@@ -389,119 +377,62 @@ function EditListing() {
             images: cleanedImages
         };
 
-
         try {
+            const response = await fetch(`/api/listings/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify(listingData)
+            });
 
-            const response = await fetch(
-                `/api/listings/${id}`,
-                {
-                    method: "PUT",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json",
-
-                        Authorization:
-                            `Bearer ${token}`
-                    },
-
-                    body: JSON.stringify(
-                        listingData
-                    )
-                }
-            );
-
-
-            const data =
-                await response.json();
-
+            const data = await response.json();
 
             if (!response.ok) {
-
                 throw new Error(
-                    data.message ||
-                    "Failed to update listing"
+                    data.message || "Failed to update listing"
                 );
-
             }
 
-
-            console.log(
-                "Updated listing:",
-                data
-            );
-
-
+            console.log("Updated listing:", data);
             navigate("/dashboard");
-
         } catch (error) {
-
-            console.error(
-                "Update error:",
-                error
-            );
-
+            console.error("Update error:", error);
             setError(error.message);
-
         } finally {
-
             setSaving(false);
-
         }
-
     };
-
 
     // =========================================
     // LOADING
     // =========================================
 
     if (loading) {
-
         return (
             <div className="create-listing">
-
                 <div className="create-listing-header">
-
-                    <h1>
-                        Edit Listing
-                    </h1>
-
-                    <p>
-                        Loading listing...
-                    </p>
-
+                    <h1>Edit Listing</h1>
+                    <p>Loading listing...</p>
                 </div>
-
             </div>
         );
-
     }
-
 
     // =========================================
     // PAGE
     // =========================================
 
     return (
-
         <div className="create-listing">
-
 
             {/* HEADER */}
 
             <div className="create-listing-header">
-
-                <h1>
-                    Edit Listing
-                </h1>
-
-                <p>
-                    Update the property details below.
-                </p>
-
+                <h1>Edit Listing</h1>
+                <p>Update the property details below.</p>
             </div>
-
 
             {error && (
                 <p className="form-error">
@@ -509,27 +440,19 @@ function EditListing() {
                 </p>
             )}
 
-
             <form
                 className="create-listing-form"
                 onSubmit={updateListing}
             >
 
-
                 {/* PROPERTY INFORMATION */}
 
                 <div className="form-section">
-
-                    <h2>
-                        Property Information
-                    </h2>
-
+                    <h2>Property Information</h2>
 
                     <div className="form-row">
 
-
                         <div className="form-group">
-
                             <label htmlFor="listingType">
                                 Listing Type
                             </label>
@@ -541,22 +464,12 @@ function EditListing() {
                                 onChange={handleChange}
                                 required
                             >
-
-                                <option value="For Sale">
-                                    For Sale
-                                </option>
-
-                                <option value="For Rent">
-                                    For Rent
-                                </option>
-
+                                <option value="For Sale">For Sale</option>
+                                <option value="For Rent">For Rent</option>
                             </select>
-
                         </div>
 
-
                         <div className="form-group">
-
                             <label htmlFor="propertyType">
                                 Property Type
                             </label>
@@ -568,46 +481,23 @@ function EditListing() {
                                 onChange={handleChange}
                                 required
                             >
-
-                                <option value="Condo">
-                                    Condo
-                                </option>
-
-                                <option value="Co-op">
-                                    Co-op
-                                </option>
-
-                                <option value="Townhouse">
-                                    Townhouse
-                                </option>
-
-                                <option value="Rental">
-                                    Rental
-                                </option>
-
+                                <option value="Condo">Condo</option>
+                                <option value="Co-op">Co-op</option>
+                                <option value="Townhouse">Townhouse</option>
+                                <option value="Rental">Rental</option>
                             </select>
-
                         </div>
 
                     </div>
-
                 </div>
-
 
                 {/* LOCATION */}
 
                 <div className="form-section">
-
-                    <h2>
-                        Location
-                    </h2>
-
+                    <h2>Location</h2>
 
                     <div className="form-group">
-
-                        <label htmlFor="address">
-                            Street Address
-                        </label>
+                        <label htmlFor="address">Street Address</label>
 
                         <input
                             id="address"
@@ -617,15 +507,11 @@ function EditListing() {
                             onChange={handleChange}
                             required
                         />
-
                     </div>
-
 
                     <div className="form-row">
 
-
                         <div className="form-group">
-
                             <label htmlFor="apartmentNumber">
                                 Apartment / Unit
                             </label>
@@ -635,22 +521,13 @@ function EditListing() {
                                 type="text"
                                 name="apartmentNumber"
                                 placeholder="#704"
-                                value={
-                                    listing.apartmentNumber
-                                }
-                                onChange={
-                                    handleChange
-                                }
+                                value={listing.apartmentNumber}
+                                onChange={handleChange}
                             />
-
                         </div>
 
-
                         <div className="form-group">
-
-                            <label htmlFor="borough">
-                                Borough
-                            </label>
+                            <label htmlFor="borough">Borough</label>
 
                             <select
                                 id="borough"
@@ -659,85 +536,49 @@ function EditListing() {
                                 onChange={handleChange}
                                 required
                             >
+                                <option value="">Select Borough</option>
 
-                                <option value="">
-                                    Select Borough
-                                </option>
-
-                                {Object.keys(
-                                    neighborhoods
-                                ).map(
-                                    (borough) => (
-                                        <option
-                                            key={borough}
-                                            value={borough}
-                                        >
-                                            {borough}
-                                        </option>
-                                    )
-                                )}
-
+                                {Object.keys(neighborhoods).map((borough) => (
+                                    <option key={borough} value={borough}>
+                                        {borough}
+                                    </option>
+                                ))}
                             </select>
-
                         </div>
 
                     </div>
 
-
                     <div className="form-group">
-
-                        <label htmlFor="neighborhood">
-                            Neighborhood
-                        </label>
+                        <label htmlFor="neighborhood">Neighborhood</label>
 
                         <select
                             id="neighborhood"
                             name="neighborhood"
-                            value={
-                                listing.neighborhood
-                            }
+                            value={listing.neighborhood}
                             onChange={handleChange}
                             required
-                            disabled={
-                                !listing.borough
-                            }
+                            disabled={!listing.borough}
                         >
-
-                            <option value="">
-                                Select Neighborhood
-                            </option>
+                            <option value="">Select Neighborhood</option>
 
                             {listing.borough &&
-                                neighborhoods[
-                                    listing.borough
-                                ].map(
+                                neighborhoods[listing.borough].map(
                                     (neighborhood) => (
                                         <option
-                                            key={
-                                                neighborhood
-                                            }
-                                            value={
-                                                neighborhood
-                                            }
+                                            key={neighborhood}
+                                            value={neighborhood}
                                         >
                                             {neighborhood}
                                         </option>
                                     )
                                 )}
-
                         </select>
-
                     </div>
-
 
                     <div className="form-row location-row">
 
-
                         <div className="form-group">
-
-                            <label htmlFor="city">
-                                City
-                            </label>
+                            <label htmlFor="city">City</label>
 
                             <input
                                 id="city"
@@ -746,15 +587,10 @@ function EditListing() {
                                 value={listing.city}
                                 readOnly
                             />
-
                         </div>
 
-
                         <div className="form-group">
-
-                            <label htmlFor="state">
-                                State
-                            </label>
+                            <label htmlFor="state">State</label>
 
                             <input
                                 id="state"
@@ -763,15 +599,10 @@ function EditListing() {
                                 value={listing.state}
                                 readOnly
                             />
-
                         </div>
 
-
                         <div className="form-group">
-
-                            <label htmlFor="zipCode">
-                                ZIP Code
-                            </label>
+                            <label htmlFor="zipCode">ZIP Code</label>
 
                             <input
                                 id="zipCode"
@@ -781,31 +612,20 @@ function EditListing() {
                                 onChange={handleChange}
                                 required
                             />
-
                         </div>
 
                     </div>
-
                 </div>
-
 
                 {/* PRICE & DETAILS */}
 
                 <div className="form-section">
-
-                    <h2>
-                        Price & Details
-                    </h2>
-
+                    <h2>Price & Details</h2>
 
                     <div className="form-row">
 
-
                         <div className="form-group">
-
-                            <label htmlFor="price">
-                                Price
-                            </label>
+                            <label htmlFor="price">Price</label>
 
                             <input
                                 id="price"
@@ -816,15 +636,10 @@ function EditListing() {
                                 min="0"
                                 required
                             />
-
                         </div>
 
-
                         <div className="form-group">
-
-                            <label htmlFor="bedrooms">
-                                Bedrooms
-                            </label>
+                            <label htmlFor="bedrooms">Bedrooms</label>
 
                             <input
                                 id="bedrooms"
@@ -835,15 +650,10 @@ function EditListing() {
                                 onChange={handleChange}
                                 required
                             />
-
                         </div>
 
-
                         <div className="form-group">
-
-                            <label htmlFor="bathrooms">
-                                Bathrooms
-                            </label>
+                            <label htmlFor="bathrooms">Bathrooms</label>
 
                             <input
                                 id="bathrooms"
@@ -855,105 +665,188 @@ function EditListing() {
                                 onChange={handleChange}
                                 required
                             />
-
                         </div>
 
                     </div>
-
                 </div>
-
 
                 {/* PHOTOS */}
 
                 <div className="form-section">
-
-                    <h2>
-                        Photos
-                    </h2>
+                    <h2>Photos</h2>
 
                     <p>
-                        Add image URLs for the property.
+                        Add image URLs for the property. Select which photo
+                        should appear first in your listing.
                     </p>
-
 
                     <div className="image-fields">
 
-                        {listing.images.map(
-                            (image, index) => (
+                        {listing.images.map((image, index) => (
+                            <div
+                                className="image-field"
+                                key={index}
+                            >
+
+                                <label htmlFor={`image-${index}`}>
+                                    Photo {index + 1}
+                                </label>
+
+                                <input
+                                    id={`image-${index}`}
+                                    type="url"
+                                    value={image}
+                                    onChange={(event) =>
+                                        handleImageChange(
+                                            index,
+                                            event.target.value
+                                        )
+                                    }
+                                    placeholder="https://example.com/photo.jpg"
+                                />
+
+                                {/* PHOTO PREVIEW */}
+
+                                {image.trim() !== "" && (
+                                    <div
+                                        style={{
+                                            marginTop: "15px",
+                                            marginBottom: "15px",
+                                            width: "100%",
+                                            maxWidth: "500px"
+                                        }}
+                                    >
+
+                                        {imageErrors[index] ? (
+                                            <p
+                                                style={{
+                                                    color: "#b42318",
+                                                    fontSize: "13px",
+                                                    padding: "12px",
+                                                    background: "#fff1f0",
+                                                    borderRadius: "4px"
+                                                }}
+                                            >
+                                                This image could not be loaded.
+                                                Check that the URL is correct
+                                                and publicly accessible.
+                                            </p>
+                                        ) : (
+                                            <img
+                                                src={image.trim()}
+                                                alt={`Property photo ${index + 1}`}
+                                                onLoad={() =>
+                                                    handleImageLoad(index)
+                                                }
+                                                onError={() =>
+                                                    handleImageError(index)
+                                                }
+                                                style={{
+                                                    display: "block",
+                                                    width: "100%",
+                                                    maxHeight: "280px",
+                                                    objectFit: "cover",
+                                                    borderRadius: "6px",
+                                                    border: "1px solid #ddd"
+                                                }}
+                                            />
+                                        )}
+
+                                    </div>
+                                )}
+
+                                {/* PRIMARY PHOTO BADGE */}
+
+                                {image.trim() !== "" &&
+                                    primaryImageIndex === index &&
+                                    !imageErrors[index] && (
+                                        <span
+                                            style={{
+                                                display: "inline-block",
+                                                marginBottom: "12px",
+                                                padding: "7px 12px",
+                                                background: "#e8f3ec",
+                                                color: "#23613d",
+                                                borderRadius: "4px",
+                                                fontSize: "12px",
+                                                fontWeight: "600"
+                                            }}
+                                        >
+                                            Primary Photo
+                                        </span>
+                                    )}
+
+                                {/* IMAGE ACTIONS */}
 
                                 <div
-                                    className="image-field"
-                                    key={index}
+                                    style={{
+                                        display: "flex",
+                                        gap: "10px",
+                                        flexWrap: "wrap",
+                                        marginBottom: "15px"
+                                    }}
                                 >
 
-                                    <label>
-                                        Photo {index + 1}
-                                    </label>
+                                    {image.trim() !== "" &&
+                                        primaryImageIndex !== index && (
+                                            <button
+                                                type="button"
+                                                onClick={() =>
+                                                    selectPrimaryImage(index)
+                                                }
+                                                style={{
+                                                    padding: "9px 14px",
+                                                    border: "1px solid #222",
+                                                    background: "#fff",
+                                                    cursor: "pointer",
+                                                    borderRadius: "4px"
+                                                }}
+                                            >
+                                                Make Primary
+                                            </button>
+                                        )}
 
-                                    <input
-                                        type="url"
-                                        value={image}
-                                        onChange={(
-                                            event
-                                        ) =>
-                                            handleImageChange(
-                                                index,
-                                                event.target.value
-                                            )
-                                        }
-                                        placeholder="https://example.com/photo.jpg"
-                                    />
-
-
-                                    {listing.images.length >
-                                        1 && (
-
+                                    {listing.images.length > 1 && (
                                         <button
                                             type="button"
                                             className="remove-image-button"
                                             onClick={() =>
-                                                removeImageField(
-                                                    index
-                                                )
+                                                removeImageField(index)
                                             }
                                         >
                                             Remove Photo
                                         </button>
-
                                     )}
 
                                 </div>
 
-                            )
-                        )}
+                            </div>
+                        ))}
 
                     </div>
-
 
                     <button
                         type="button"
                         className="add-image-button"
-                        onClick={
-                            addImageField
-                        }
+                        onClick={addImageField}
+                        disabled={listing.images.length >= MAX_IMAGES}
                     >
                         + Add Another Photo
                     </button>
 
-                </div>
+                    <p style={{ fontSize: "12px", color: "#777" }}>
+                        {listing.images.length} of {MAX_IMAGES} photo fields
+                        used.
+                    </p>
 
+                </div>
 
                 {/* DESCRIPTION */}
 
                 <div className="form-section">
-
-                    <h2>
-                        Description
-                    </h2>
-
+                    <h2>Description</h2>
 
                     <div className="form-group">
-
                         <label htmlFor="description">
                             Property Description
                         </label>
@@ -961,20 +854,13 @@ function EditListing() {
                         <textarea
                             id="description"
                             name="description"
-                            value={
-                                listing.description
-                            }
-                            onChange={
-                                handleChange
-                            }
+                            value={listing.description}
+                            onChange={handleChange}
                             rows="7"
                             required
                         />
-
                     </div>
-
                 </div>
-
 
                 {/* ACTIONS */}
 
@@ -983,34 +869,24 @@ function EditListing() {
                     <button
                         type="button"
                         className="cancel-button"
-                        onClick={() =>
-                            navigate(
-                                "/dashboard"
-                            )
-                        }
+                        onClick={() => navigate("/dashboard")}
                     >
                         Cancel
                     </button>
-
 
                     <button
                         type="submit"
                         className="publish-button"
                         disabled={saving}
                     >
-                        {saving
-                            ? "Saving..."
-                            : "Save Changes"}
+                        {saving ? "Saving..." : "Save Changes"}
                     </button>
 
                 </div>
 
             </form>
-
         </div>
-
     );
-
 }
 
 export default EditListing;
