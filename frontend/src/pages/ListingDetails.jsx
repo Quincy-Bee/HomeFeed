@@ -1,3 +1,4 @@
+
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./ListingDetails.css";
@@ -120,9 +121,7 @@ function ListingDetails() {
                                                 : ""
                                         }`}
                                         onClick={() =>
-                                            setSelectedImage(
-                                                index
-                                            )
+                                            setSelectedImage(index)
                                         }
                                     >
 
@@ -260,14 +259,8 @@ function ListingDetails() {
 
                             {listing.owner.headshot && (
                                 <img
-                                    src={
-                                        listing.owner
-                                            .headshot
-                                    }
-                                    alt={
-                                        listing.owner
-                                            .name
-                                    }
+                                    src={listing.owner.headshot}
+                                    alt={listing.owner.name}
                                     className="agent-headshot"
                                 />
                             )}
@@ -277,38 +270,27 @@ function ListingDetails() {
                                 Listed by{" "}
 
                                 <strong>
-                                    {listing.owner
-                                        .brokerage ||
-                                        listing.owner
-                                            .name}
+                                    {listing.owner.brokerage ||
+                                        listing.owner.name}
                                 </strong>
 
                             </p>
 
                             {listing.owner.name && (
                                 <p>
-                                    {
-                                        listing.owner
-                                            .name
-                                    }
+                                    {listing.owner.name}
                                 </p>
                             )}
 
                             {listing.owner.phone && (
                                 <p>
-                                    {
-                                        listing.owner
-                                            .phone
-                                    }
+                                    {listing.owner.phone}
                                 </p>
                             )}
 
                             {listing.owner.email && (
                                 <p>
-                                    {
-                                        listing.owner
-                                            .email
-                                    }
+                                    {listing.owner.email}
                                 </p>
                             )}
 
@@ -319,6 +301,10 @@ function ListingDetails() {
                             for more information.
                         </p>
                     )}
+
+                    {/* ==========================================
+                        SCHEDULE A SHOWING EMAIL BUTTON
+                    ========================================== */}
 
                     <button
                         type="button"
@@ -340,10 +326,14 @@ function ListingDetails() {
                                 .filter(Boolean)
                                 .join(" ");
 
-                            const subject = `Showing Request: ${propertyAddress}`;
-                            const body = `Hello ${listing.owner.name || "there"},
+                            const subject = `Showing Request - ${propertyAddress}`;
 
-I'm interested in viewing the property at ${propertyAddress}, ${listing.city}, ${listing.state} ${listing.zipCode}.
+                            const body = `Hello,
+
+I'm interested in scheduling a showing for the property at:
+
+${propertyAddress}
+${listing.city}, ${listing.state} ${listing.zipCode}
 
 Please let me know what showing times are available.
 
