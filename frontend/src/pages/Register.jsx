@@ -7,6 +7,7 @@ function Register() {
     const navigate = useNavigate();
 
     const [user, setUser] = useState({
+        accountType: "personal",
         name: "",
         email: "",
         phone: "",
@@ -29,6 +30,10 @@ function Register() {
         }));
 
         if (name === "headshot") {
+            setImageError(false);
+        }
+
+        if (name === "accountType") {
             setImageError(false);
         }
     };
@@ -60,7 +65,19 @@ function Register() {
             return;
         }
 
-        if (user.headshot && imageError) {
+        if (
+            user.accountType === "broker" &&
+            !user.brokerage.trim()
+        ) {
+            setError("Please enter your brokerage name.");
+            return;
+        }
+
+        if (
+            user.accountType === "broker" &&
+            user.headshot &&
+            imageError
+        ) {
             setError("Please enter a valid profile image URL or remove it.");
             return;
         }
@@ -74,11 +91,18 @@ function Register() {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
+                    accountType: user.accountType,
                     name: user.name.trim(),
                     email: user.email.trim().toLowerCase(),
                     phone: user.phone.trim(),
-                    brokerage: user.brokerage.trim(),
-                    headshot: user.headshot.trim(),
+                    brokerage:
+                        user.accountType === "broker"
+                            ? user.brokerage.trim()
+                            : "",
+                    headshot:
+                        user.accountType === "broker"
+                            ? user.headshot.trim()
+                            : "",
                     password: user.password
                 })
             });
@@ -107,6 +131,26 @@ function Register() {
 
             <form onSubmit={registerUser}>
 
+                <label htmlFor="accountType">
+                    What type of account would you like?
+                </label>
+
+                <select
+                    id="accountType"
+                    name="accountType"
+                    value={user.accountType}
+                    onChange={handleChange}
+                    required
+                >
+                    <option value="personal">
+                        Personal Account
+                    </option>
+
+                    <option value="broker">
+                        Broker / Agent Account
+                    </option>
+                </select>
+
                 <input
                     name="name"
                     placeholder="Full Name"
@@ -133,59 +177,65 @@ function Register() {
                     required
                 />
 
-                <input
-                    name="brokerage"
-                    placeholder="Brokerage Name"
-                    value={user.brokerage}
-                    onChange={handleChange}
-                    required
-                />
+                {user.accountType === "broker" && (
+                    <>
+                        <input
+                            name="brokerage"
+                            placeholder="Brokerage Name"
+                            value={user.brokerage}
+                            onChange={handleChange}
+                            required
+                        />
 
-                <div className="profile-image-section">
+                        <div className="profile-image-section">
 
-                    <label htmlFor="headshot">
-                        Profile Photo (Optional)
-                    </label>
+                            <label htmlFor="headshot">
+                                Profile Photo (Optional)
+                            </label>
 
-                    <p>
-                        Paste a direct link to your profile photo.
-                        You can also skip this step and add one later.
-                    </p>
+                            <p>
+                                Paste a direct link to your profile photo.
+                                You can also skip this step and add one later.
+                            </p>
 
-                    <input
-                        id="headshot"
-                        name="headshot"
-                        type="url"
-                        placeholder="https://example.com/photo.jpg"
-                        value={user.headshot}
-                        onChange={handleChange}
-                    />
-
-                    {user.headshot && !imageError && (
-                        <div className="profile-image-preview">
-                            <img
-                                src={user.headshot}
-                                alt="Profile preview"
-                                onError={handleImageError}
+                            <input
+                                id="headshot"
+                                name="headshot"
+                                type="url"
+                                placeholder="https://example.com/photo.jpg"
+                                value={user.headshot}
+                                onChange={handleChange}
                             />
 
-                            <button
-                                type="button"
-                                onClick={handleRemoveImage}
-                            >
-                                Remove Photo
-                            </button>
+                            {user.headshot && !imageError && (
+                                <div className="profile-image-preview">
+
+                                    <img
+                                        src={user.headshot}
+                                        alt="Profile preview"
+                                        onError={handleImageError}
+                                    />
+
+                                    <button
+                                        type="button"
+                                        onClick={handleRemoveImage}
+                                    >
+                                        Remove Photo
+                                    </button>
+
+                                </div>
+                            )}
+
+                            {imageError && (
+                                <p className="image-error">
+                                    Unable to load this image.
+                                    Please check the URL.
+                                </p>
+                            )}
+
                         </div>
-                    )}
-
-                    {imageError && (
-                        <p className="image-error">
-                            Unable to load this image.
-                            Please check the URL.
-                        </p>
-                    )}
-
-                </div>
+                    </>
+                )}
 
                 <input
                     name="password"
